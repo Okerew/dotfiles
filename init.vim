@@ -22,6 +22,7 @@ Plug 'mfussenegger/nvim-dap-python'
 Plug 'jbyuki/instant.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'kkvh/vim-docker-tools'
+Plug 'tibabit/vim-templates'
 
 call plug#end()
 let g:coq_settings ={'auto_start': 'shut-up'}
