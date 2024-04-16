@@ -1,4 +1,6 @@
+# INSTALATION
+[Download vim plug](https://github.com/junegunn/vim-plug)
 
-My neovim config you can download it by either copying the init.vim code to your own init.vim
-
-Or you can gitclone it delete the previous init.vim and mv init.vim into your nvim config
+You can download my neovim config it by either copying the init.vim code to your own init.vim
+Or you can git clone if nvim folder is empty `git clone https://github.com/Okerew/OkerewConfig ~/.config/nvim`
+Then run `PlugInstall`
