@@ -34,7 +34,7 @@ let mapleader = ","
 noremap <C-s> :Telescope find_files<CR>
 noremap <C-b> :NERDTreeToggle<CR>
 noremap <leader>t :terminal<CR>
-nnoremap <leader>[ :tab new<CR>
+noremap <leader>[ :tab new<CR>
 
 imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-;>   <Cmd>call codeium#CycleCompletions(1)<CR>
