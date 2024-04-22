@@ -24,6 +24,10 @@ Plug 'jbyuki/instant.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'kkvh/vim-docker-tools'
 Plug 'tibabit/vim-templates'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'branch': 'release/0.x'
+  \ }
 
 call plug#end()
 let g:coq_settings ={'auto_start': 'shut-up'}
