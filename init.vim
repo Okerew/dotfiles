@@ -28,6 +28,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
   \ 'branch': 'release/0.x'
   \ }
+Plug 'kdheepak/lazygit.nvim'
 
 call plug#end()
 let g:coq_settings ={'auto_start': 'shut-up'}
@@ -39,6 +40,7 @@ noremap <C-s> :Telescope find_files<CR>
 noremap <C-b> :NERDTreeToggle<CR>
 noremap <leader>t :terminal<CR>
 noremap <leader>[ :tab new<CR>
+nnoremap <silent> <leader>gg :LazyGit<CR>
 
 imap <script><silent><nowait><expr> <C-g> codeium#Accept()
 imap <C-;>   <Cmd>call codeium#CycleCompletions(1)<CR>
