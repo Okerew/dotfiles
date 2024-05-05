@@ -20,7 +20,6 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
-Plug 'jbyuki/instant.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'kkvh/vim-docker-tools'
 Plug 'tibabit/vim-templates'
@@ -50,7 +49,6 @@ imap <C-l>   <Cmd>call codeium#Chat()<CR>
 set background=dark
 colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
-let g:instant_username = "Okerew"
 
 lua << END
 require('lualine').setup {
