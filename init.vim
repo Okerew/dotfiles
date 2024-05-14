@@ -35,6 +35,8 @@ let g:codeium_disable_bindings = 1
 let g:ale_completion_enabled = 1
 let mapleader = ","
 
+set clipboard=unnamedplus
+
 noremap <C-s> :Telescope find_files<CR>
 noremap <C-b> :NERDTreeToggle<CR>
 noremap <leader>t :terminal<CR>
