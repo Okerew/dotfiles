@@ -15,7 +15,6 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
 Plug 'preservim/nerdtree'
-Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'mfussenegger/nvim-dap'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
@@ -28,6 +27,7 @@ Plug 'prettier/vim-prettier', {
   \ 'branch': 'release/0.x'
   \ }
 Plug 'kdheepak/lazygit.nvim'
+Plug 'rebelot/kanagawa.nvim'
 
 call plug#end()
 let g:coq_settings ={'auto_start': 'shut-up'}
@@ -36,6 +36,7 @@ let g:ale_completion_enabled = 1
 let mapleader = ","
 
 set clipboard=unnamedplus
+set number
 
 noremap <C-s> :Telescope find_files<CR>
 noremap <C-b> :NERDTreeToggle<CR>
@@ -49,9 +50,9 @@ imap <C-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>
 imap <C-l>   <Cmd>call codeium#Chat()<CR>
 set background=dark
-colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+colorscheme kanagawa-dragon
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
-
+vim.opt.number = true
 lua << END
 require('lualine').setup {
   options = {
