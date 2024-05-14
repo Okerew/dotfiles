@@ -52,7 +52,6 @@ imap <C-l>   <Cmd>call codeium#Chat()<CR>
 set background=dark
 colorscheme kanagawa-dragon
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
-vim.opt.number = true
 lua << END
 require('lualine').setup {
   options = {
