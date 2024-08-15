@@ -27,15 +27,19 @@ Plug 'prettier/vim-prettier', {
   \ 'branch': 'release/0.x'
   \ }
 Plug 'rebelot/kanagawa.nvim'
+Plug 'nvim-orgmode/orgmode'
+Plug 'projekt0n/github-nvim-theme'
+Plug 'cormacrelf/dark-notify'
 
 call plug#end()
 let g:coq_settings ={'auto_start': 'shut-up'}
-let g:codeium_disable_bindings = 1
 let g:ale_completion_enabled = 1
 let mapleader = ","
+let g:codeium_disable_bindings = 1
 
 set clipboard=unnamedplus
 set number
+colorscheme github_light
 
 noremap <C-s> :Telescope find_files<CR>
 noremap <C-b> :NERDTreeToggle<CR>
@@ -48,8 +52,7 @@ imap <C-;>   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <C-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <C-x>   <Cmd>call codeium#Clear()<CR>
 imap <C-l>   <Cmd>call codeium#Chat()<CR>
-set background=dark
-colorscheme kanagawa-dragon
+
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
 lua << END
 require('lualine').setup {
@@ -92,4 +95,35 @@ require('lualine').setup {
   inactive_winbar = {},
   extensions = {}
 }
+
 END
+
+lua << EOF
+
+require('orgmode').setup({
+  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
+  org_default_notes_file = '~/Dropbox/org/refile.org',
+})
+
+
+EOF
+
+lua << EOD
+local dn = require('dark_notify')
+
+-- Configure
+dn.run({
+    schemes = {
+      dark  = {
+	colorscheme = "github_dark",
+	      },
+      light = {
+        colorscheme = "github_light",
+      }
+    }
+})
+
+
+dn.run()
+
+EOD
