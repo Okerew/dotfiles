@@ -3,7 +3,7 @@
 --------------------------------------------------------
 
 Requires: 
-vscode-langservers-extracted npm i -g vscode-langservers-extracted
+vscode-langservers-extracted - npm i -g vscode-langservers-extracted
 
 rust_analyzer - rustup component add rust-analyzer
 
