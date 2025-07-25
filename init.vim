@@ -17,8 +17,6 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
-Plug 'mfussenegger/nvim-dap'
-Plug 'mfussenegger/nvim-dap-python'
 Plug 'kkvh/vim-docker-tools'
 Plug 'tibabit/vim-templates'
 Plug 'nvim-orgmode/orgmode'
@@ -32,20 +30,17 @@ Plug 'lervag/vimtex'
 Plug 'olimorris/codecompanion.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'goerz/jupytext.nvim'
-Plug 'leoluz/nvim-dap-go'
 Plug 'jiaoshijie/undotree'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'jay-babu/mason-nvim-dap.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'nvim-neotest/neotest'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'nvim-neotest/neotest-python'
 Plug 'nvim-neotest/neotest-go'
 Plug 'rouge8/neotest-rust'
-Plug 'coffebar/neovim-project'
-Plug 'Shatur/neovim-session-manager'
+Plug 'nvimdev/dashboard-nvim'
 
 call plug#end()
 
@@ -432,16 +427,6 @@ require("mason-lspconfig").setup({
     automatic_installation = true,
 })
 
--- Mason-nvim-dap setup
-require("mason-nvim-dap").setup({
-    ensure_installed = {
-        "python",
-        "codelldb",
-        "delve"  -- Go debugger
-    },
-    automatic_installation = true,
-})
-
 -- Function to install additional tools
 local function ensure_installed()
     local mason_registry = require("mason-registry")
@@ -647,61 +632,6 @@ EOF
 let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
 
 lua << EOF
-local dap = require("dap")
-
--- Setup the adapter only if it doesn't already exist
-if not dap.adapters["codelldb"] then
-  dap.adapters["codelldb"] = {
-    type = "server",
-    host = "localhost",
-    port = "${port}",
-    executable = {
-      command = "codelldb",
-      args = {
-        "--port",
-        "${port}",
-      },
-    },
-  }
-end
-
--- List of languages supported by codelldb
-local lldb_languages = { "c", "cpp", "rust" }
-
-for _, lang in ipairs(lldb_languages) do
-  dap.configurations[lang] = {
-    {
-      type = "codelldb",
-      request = "launch",
-      name = "Launch file",
-      program = function()
-        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-      end,
-      cwd = "${workspaceFolder}",
-      stopOnEntry = false,
-    },
-    {
-      type = "codelldb",
-      request = "attach",
-      name = "Attach to process",
-      pid = require("dap.utils").pick_process,
-      cwd = "${workspaceFolder}",
-    },
-  }
-end
-EOF
-
-
-lua << EOF
-require("dap-python").setup(".venv/bin/python")
-EOF
-
-
-lua << EOF
-require('dap-go').setup()
-EOF
-
-lua << EOF
 local undotree = require('undotree')
 
 undotree.setup({
@@ -864,39 +794,65 @@ require("neotest").setup({
 })
 EOF
 
-lua << EOF
--- Neovim-project setup
-require("neovim-project").setup({
-  projects = { -- define project roots
-    "~/Documents/*",
-    "~/CLionProjects/*",
-    "~/PycharmProjects/*",
-  },
-  -- Load the most recent session on startup if not in a project dir
-  last_session_on_startup = true,
-  -- Dashboard mode prevent session autoload on startup
-  dashboard_mode = false,
-  -- Timeout in milliseconds before trigger FileType autocmd after session load
-  -- to make sure lsp servers are attached to the current buffer.
-  -- Set to 0 to disable triggering FileType autocmd
-  filetype_autocmd_timeout = 200,
-  -- Set to true to enable line numbers and fold columns for sessions
-  session_manager_opts = {
-    autosave_ignore_dirs = {
-      vim.fn.expand("~"), -- Don't create a session for $HOME/
-      "/tmp",
-    },
-    autosave_ignore_filetypes = {
-      -- All buffers of these file types will be closed before the session is saved
-      "ccc-ui",
-      "gitcommit",
-      "gitrebase",
-      "qf",
-      "toggleterm",
-    },
-  },
-})
 
--- Enable telescope extension
-require('telescope').load_extension('neovim-project')
+lua << EOF
+require('dashboard').setup {
+  theme = 'hyper',
+  config = {
+    week_header = {
+     enable = true,
+    },
+    shortcut = {
+      { desc = '󰊳 Update', group = '@property', action = 'PlugUpdate', key = 'u' },
+      {
+        icon = ' ',
+        icon_hl = '@variable',
+        desc = 'Files',
+        group = 'Label',
+        action = 'Telescope find_files',
+        key = 'f',
+      },
+      {
+        desc = ' Projects',
+        group = 'DiagnosticHint',
+        action = 'Telescope neovim-project discover',
+        key = 'p',
+      },
+      {
+        desc = ' Live Grep',
+        group = 'Number',
+        action = 'Telescope live_grep',
+        key = 'g',
+      },
+      {
+        desc = ' New File',
+        group = 'DiagnosticHint',
+        action = 'ene | startinsert',
+        key = 'n',
+      },
+      {
+        desc = ' Config',
+        group = 'Number',
+        action = 'edit ~/.config/nvim/init.vim',
+        key = 'c',
+      },
+    },
+    project = {
+      enable = true,
+      limit = 8,
+      icon = ' ',
+      label = ' Recent Projects:',
+      action = 'Telescope find_files cwd='
+    },
+    mru = {
+      limit = 10,
+      icon = ' ',
+      label = ' Recent Files:',
+      cwd_only = false,
+    },
+    footer = function()
+      return { "Config built by Okerew enjoy!" }
+    end,
+  },
+}
 EOF
