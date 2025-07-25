@@ -19,7 +19,6 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
-Plug 'preservim/nerdtree'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
@@ -37,6 +36,7 @@ Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
 Plug 'olimorris/codecompanion.nvim'
+Plug 'nvim-tree/nvim-tree.lua'
 
 call plug#end()
 
@@ -92,14 +92,12 @@ nnoremap =ap ma=ap'a
 " Paste over visual selection without yanking replaced text
 xnoremap <leader>p "_dP
 
-" Telescope and Nerdtree shortcuts
-noremap <C-s> :Telescope find_files<CR>
-noremap <C-b> :NERDTreeToggle<CR>
-noremap <leader>t :terminal<CR>
+" Shortcuts
+noremap <leader>f :Telescope find_files<CR>
+noremap <leader>t :NvimTreeOpen<CR>
 noremap <leader>[ :tab new<CR>
-
-" LazyGit shortcut (make sure you have LazyGit installed)
-nnoremap <silent> <leader>gg :LazyGit<CR>
+noremap <leader>] :bd<CR>
+nnoremap <leader>m :CodeCompanion<CR>
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
@@ -259,9 +257,6 @@ EOF
 
 " ALE settings
 let g:ale_completion_enabled = 1
-
-" Codeium disable default bindings
-let g:codeium_disable_bindings = 1
 
 let g:ale_linters = {
 \   'python': ['flake8'],
@@ -521,6 +516,10 @@ require("codecompanion").setup({
     },
   },
 })
+EOF
+
+lua << EOF
+require("nvim-tree").setup()
 EOF
 
 let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
