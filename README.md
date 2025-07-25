@@ -19,6 +19,8 @@ typescript-langauge-server - npm i -g typescript-language-server
 
 zathura
 
+ueberzugpp - https://github.com/jstkdng/ueberzugpp
+
 ----- 
 
 You can download my neovim config by either copying the init.vim code to your own init.vim
