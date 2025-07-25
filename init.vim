@@ -5,7 +5,6 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'tpope/vim-fugitive'
 Plug 'phaazon/hop.nvim'
-Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -37,6 +36,7 @@ Plug 'Civitasv/cmake-tools.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
+Plug 'olimorris/codecompanion.nvim'
 
 call plug#end()
 
@@ -100,13 +100,6 @@ noremap <leader>[ :tab new<CR>
 
 " LazyGit shortcut (make sure you have LazyGit installed)
 nnoremap <silent> <leader>gg :LazyGit<CR>
-
-" Codeium mappings
-imap <script><silent><nowait><expr> <C-g> codeium#Accept()
-imap <C-;>   <Cmd>call codeium#CycleCompletions(1)<CR>
-imap <C-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <C-x>   <Cmd>call codeium#Clear()<CR>
-imap <C-l>   <Cmd>call codeium#Chat()<CR>
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
@@ -492,4 +485,42 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 EOF
+
+lua << EOF
+require("codecompanion").setup({
+  strategies = {
+    chat = {
+      adapter = 'qwen',
+    },
+    inline = {
+      adapter = 'qwen',
+    },
+  },
+  adapters = {
+    qwen = function()
+      return require('codecompanion.adapters').extend('ollama', {
+        name = 'qwen',
+        schema = {
+          model = {
+            default = 'qwen2.5-coder:7b',
+          },
+        },
+      })
+    end,
+  },
+  opts = {
+    log_level = 'DEBUG',
+  },
+  display = {
+    diff = {
+      enabled = true,
+      close_chat_at = 240,
+      layout = 'vertical',
+      opts = { 'internal', 'filler', 'closeoff', 'algorithm:patience', 'followwrap', 'linematch:120' },
+      provider = 'default',
+    },
+  },
+})
+EOF
+
 let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
