@@ -30,13 +30,13 @@ Plug 'cormacrelf/dark-notify'
 Plug 'neovim/nvim-lspconfig'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jbyuki/instant.nvim'
-Plug 'azratul/live-share.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
 Plug 'olimorris/codecompanion.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
+Plug 'dccsillag/magma-nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
@@ -102,7 +102,15 @@ nnoremap <leader>m :CodeCompanion<CR>
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
 
-" === PLUGIN CONFIGURATIONS ===
+nnoremap <silent><expr> <LocalLeader>r  :MagmaEvaluateOperator<CR>
+nnoremap <silent>       <LocalLeader>rr :MagmaEvaluateLine<CR>
+xnoremap <silent>       <LocalLeader>r  :<C-u>MagmaEvaluateVisual<CR>
+nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
+nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
+nnoremap <silent>       <LocalLeader>ro :MagmaShowOutput<CR>
+
+let g:magma_automatically_open_output = v:false
+let g:magma_image_provider = "ueberzugpp"
 
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
 
