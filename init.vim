@@ -26,7 +26,6 @@ Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'kkvh/vim-docker-tools'
 Plug 'tibabit/vim-templates'
-Plug 'rebelot/kanagawa.nvim'
 Plug 'nvim-orgmode/orgmode'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'cormacrelf/dark-notify'
@@ -37,6 +36,7 @@ Plug 'azratul/live-share.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
+Plug 'lervag/vimtex'
 
 call plug#end()
 
@@ -115,6 +115,8 @@ command! -nargs=* Gits Gitsigns <args>
 
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
 
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_view_zathura_use_synctex = 0
 " Gitsigns
 lua << EOF
 require('gitsigns').setup {
