@@ -15,6 +15,8 @@ flake8 linter - pipx install flake8
 
 pyright lsp - pipx install pyright
 
+zathura
+
 ----- 
 
 You can download my neovim config by either copying the init.vim code to your own init.vim
