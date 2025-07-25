@@ -3,23 +3,11 @@
 --------------------------------------------------------
 
 Requires: 
-vscode-langservers-extracted - npm i -g vscode-langservers-extracted
-
-rust_analyzer - rustup component add rust-analyzer
-
 clangd 
-
-black formatter - pipx install black
-
-flake8 linter - pipx install flake8
-
-pyright lsp - pipx install pyright
-
-typescript-langauge-server - npm i -g typescript-language-server
 
 zathura
 
-ueberzugpp - https://github.com/jstkdng/ueberzugpp
+nvim 0.11
 
 ----- 
 
