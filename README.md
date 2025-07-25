@@ -15,6 +15,8 @@ flake8 linter - pipx install flake8
 
 pyright lsp - pipx install pyright
 
+typescript-langauge-server - npm i -g typescript-language-server
+
 zathura
 
 ----- 
