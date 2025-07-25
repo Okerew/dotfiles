@@ -584,6 +584,7 @@ undotree.setup({
 EOF
 
 lua << EOF
+vim.opt.termguicolors = true
 require("notify").setup()
 require("telescope").load_extension("notify")
 EOF
