@@ -2,14 +2,12 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'nvim-neotest/nvim-nio'
 Plug 'tpope/vim-fugitive'
 Plug 'phaazon/hop.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -20,15 +18,12 @@ Plug 'nvim-tree/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
 Plug 'mfussenegger/nvim-dap'
-Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'kkvh/vim-docker-tools'
 Plug 'tibabit/vim-templates'
 Plug 'nvim-orgmode/orgmode'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'cormacrelf/dark-notify'
-Plug 'neovim/nvim-lspconfig'
-Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jbyuki/instant.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
@@ -36,7 +31,11 @@ Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
 Plug 'olimorris/codecompanion.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
-Plug 'dccsillag/magma-nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'goerz/jupytext.nvim'
+Plug 'leoluz/nvim-dap-go'
+Plug 'jiaoshijie/undotree'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'rcarriga/nvim-notify'
 
 call plug#end()
 
@@ -98,19 +97,11 @@ noremap <leader>t :NvimTreeOpen<CR>
 noremap <leader>[ :tab new<CR>
 noremap <leader>] :bd<CR>
 nnoremap <leader>m :CodeCompanion<CR>
+noremap <leader>h :lua require('undotree').toggle()<CR>
+noremap <leader>l :Telescope live_grep<CR>
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
-
-nnoremap <silent><expr> <LocalLeader>r  :MagmaEvaluateOperator<CR>
-nnoremap <silent>       <LocalLeader>rr :MagmaEvaluateLine<CR>
-xnoremap <silent>       <LocalLeader>r  :<C-u>MagmaEvaluateVisual<CR>
-nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
-nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
-nnoremap <silent>       <LocalLeader>ro :MagmaShowOutput<CR>
-
-let g:magma_automatically_open_output = v:false
-let g:magma_image_provider = "ueberzugpp"
 
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
 
@@ -224,41 +215,6 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   pattern = "*.metal",
   callback = function()
     vim.bo.filetype = "cpp"
-  end,
-})
-EOF
-
-lua << EOF
-local null_ls = require("null-ls")
-
-local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
-local event = "BufWritePre" -- or "BufWritePost"
-local async = event == "BufWritePost"
-
-null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.keymap.set("n", "<Leader>f", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-
-      -- format on save
-      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-      vim.api.nvim_create_autocmd(event, {
-        buffer = bufnr,
-        group = group,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = bufnr, async = async })
-        end,
-        desc = "[lsp] format on save",
-      })
-    end
-
-    if client.supports_method("textDocument/rangeFormatting") then
-      vim.keymap.set("x", "<Leader>f", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-    end
   end,
 })
 EOF
@@ -452,7 +408,9 @@ cmp.setup({
     { name = "nvim_lsp" },
   }, {
     { name = "buffer" },
-  }),
+    },{ 
+    { name = 'nvim_lsp_signature_help' }
+    }),
 })
 
 -- LSP capabilities with nvim-cmp
@@ -530,4 +488,102 @@ lua << EOF
 require("nvim-tree").setup()
 EOF
 
+lua << EOF
+opts = {
+  jupytext = 'jupytext',
+  format = "markdown",
+  update = true,
+  filetype = require("jupytext").get_filetype,
+  new_template = require("jupytext").default_new_template(),
+  sync_patterns = { '*.md', '*.py', '*.jl', '*.R', '*.Rmd', '*.qmd' },
+  autosync = true,
+  handle_url_schemes = true,
+}
+require("jupytext").setup(opts)
+EOF
+
 let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
+
+lua << EOF
+local dap = require("dap")
+
+-- Setup the adapter only if it doesn't already exist
+if not dap.adapters["codelldb"] then
+  dap.adapters["codelldb"] = {
+    type = "server",
+    host = "localhost",
+    port = "${port}",
+    executable = {
+      command = "codelldb",
+      args = {
+        "--port",
+        "${port}",
+      },
+    },
+  }
+end
+
+-- List of languages supported by codelldb
+local lldb_languages = { "c", "cpp", "rust" }
+
+for _, lang in ipairs(lldb_languages) do
+  dap.configurations[lang] = {
+    {
+      type = "codelldb",
+      request = "launch",
+      name = "Launch file",
+      program = function()
+        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+      end,
+      cwd = "${workspaceFolder}",
+      stopOnEntry = false,
+    },
+    {
+      type = "codelldb",
+      request = "attach",
+      name = "Attach to process",
+      pid = require("dap.utils").pick_process,
+      cwd = "${workspaceFolder}",
+    },
+  }
+end
+EOF
+
+
+lua << EOF
+require("dap-python").setup(".venv/bin/python")
+EOF
+
+
+lua << EOF
+require('dap-go').setup()
+EOF
+
+lua << EOF
+local undotree = require('undotree')
+
+undotree.setup({
+  float_diff = true,  -- using float window previews diff, set this `true` will disable layout option
+  layout = "left_bottom", -- "left_bottom", "left_left_bottom"
+  position = "left", -- "right", "bottom"
+  ignore_filetype = { 'undotree', 'undotreeDiff', 'qf', 'TelescopePrompt', 'spectre_panel', 'tsplayground' },
+  window = {
+    winblend = 30,
+  },
+  keymaps = {
+    ['j'] = "move_next",
+    ['k'] = "move_prev",
+    ['gj'] = "move2parent",
+    ['J'] = "move_change_next",
+    ['K'] = "move_change_prev",
+    ['<cr>'] = "action_enter",
+    ['p'] = "enter_diffbuf",
+    ['q'] = "quit",
+  },
+})
+EOF
+
+lua << EOF
+require("notify").setup()
+require("telescope").load_extension("notify")
+EOF
