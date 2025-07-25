@@ -35,7 +35,17 @@ Plug 'goerz/jupytext.nvim'
 Plug 'leoluz/nvim-dap-go'
 Plug 'jiaoshijie/undotree'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'jay-babu/mason-nvim-dap.nvim'
 Plug 'rcarriga/nvim-notify'
+Plug 'nvim-neotest/neotest'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'nvim-neotest/neotest-python'
+Plug 'nvim-neotest/neotest-go'
+Plug 'rouge8/neotest-rust'
+Plug 'coffebar/neovim-project'
+Plug 'Shatur/neovim-session-manager'
 
 call plug#end()
 
@@ -97,8 +107,16 @@ noremap <leader>t :NvimTreeOpen<CR>
 noremap <leader>[ :tab new<CR>
 noremap <leader>] :bd<CR>
 nnoremap <leader>m :CodeCompanion<CR>
-noremap <leader>h :lua require('undotree').toggle()<CR>
+noremap <leader>u :lua require('undotree').toggle()<CR>
 noremap <leader>l :Telescope live_grep<CR>
+nnoremap <leader>tt :lua require("neotest").run.run()<CR>
+nnoremap <leader>tf :lua require("neotest").run.run(vim.fn.expand("%"))<CR>
+nnoremap <leader>ts :lua require("neotest").summary.toggle()<CR>
+nnoremap <leader>to :lua require("neotest").output.open({ enter = true })<CR>
+nnoremap <leader>tO :lua require("neotest").output_panel.toggle()<CR>
+nnoremap <leader>td :lua require("neotest").run.run({strategy = "dap"})<CR>
+noremap <leader>p :Telescope neovim-project discover<CR>
+noremap <leader>ph :Telescope neovim-project history<CR>
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
@@ -385,6 +403,92 @@ lua << EOF
 require("distant"):setup()
 EOF
 
+" === MASON SETUP ===
+lua << EOF
+-- Mason setup - must be called before lspconfig
+require("mason").setup({
+    ui = {
+        icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗"
+        }
+    }
+})
+
+-- Mason-lspconfig setup
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "pyright",
+        "clangd", 
+        "rust_analyzer",
+        "ts_ls",
+        "bashls",
+        "cssls",
+        "jsonls",
+        "html",
+        "lua_ls"
+    },
+    automatic_installation = true,
+})
+
+-- Mason-nvim-dap setup
+require("mason-nvim-dap").setup({
+    ensure_installed = {
+        "python",
+        "codelldb",
+        "delve"  -- Go debugger
+    },
+    automatic_installation = true,
+})
+
+-- Function to install additional tools
+local function ensure_installed()
+    local mason_registry = require("mason-registry")
+    
+    -- List of tools to ensure are installed
+    local tools_to_install = {
+        -- Python tools
+        "black",
+        "isort",
+        "flake8",
+        
+        -- JavaScript/TypeScript tools
+        "prettier",
+        "prettierd",
+        "eslint_d",
+        
+        -- C/C++ tools
+        "clang-format",
+        "clang-tidy",  -- Note: it's clang-tidy, not clangtidy
+        
+        -- Go tools
+        "goimports",
+        "golangci-lint",
+        
+        -- Rust tools
+        "rustfmt",
+        
+        -- Lua tools
+        "stylua",
+    }
+    
+    -- Install tools that aren't already installed
+    for _, tool in ipairs(tools_to_install) do
+        if mason_registry.has_package(tool) then
+            local p = mason_registry.get_package(tool)
+            if not p:is_installed() then
+                p:install()
+            end
+        end
+    end
+end
+
+-- Defer the installation to avoid race conditions
+vim.defer_fn(ensure_installed, 100)
+EOF
+
+
 lua <<EOF
 local cmp = require("cmp")
 
@@ -416,13 +520,47 @@ cmp.setup({
 -- LSP capabilities with nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+-- Setup LSP servers with Mason integration
 local lspconfig = require("lspconfig")
-local servers = { "pyright", "clangd", "rust_analyzer", "ts_ls", "bashls", "cssls", "jsonls", "html" } -- servers I use
+local servers = { "pyright", "clangd", "rust_analyzer", "ts_ls", "bashls", "cssls", "jsonls", "html", "lua_ls" }
 
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup({
+  local opts = {
     capabilities = capabilities,
-  })
+  }
+  
+  -- Special configuration for lua_ls
+  if lsp == "lua_ls" then
+    opts.settings = {
+      Lua = {
+        runtime = {
+          version = "LuaJIT",
+        },
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file("", true),
+          checkThirdParty = false,
+        },
+        telemetry = {
+          enable = false,
+        },
+      },
+    }
+  elseif lsp == "clangd" then
+    opts.cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--header-insertion=iwyu",
+      "--completion-style=detailed",
+      "--function-arg-placeholders",
+      "--fallback-style=llvm",
+    }
+  end
+  
+  lspconfig[lsp].setup(opts)
 end
 EOF
 
@@ -430,12 +568,16 @@ lua <<EOF
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
-    -- Conform will run multiple formatters sequentially
     python = { "isort", "black" },
-    -- You can customize some of the format options for the filetype (:help conform.format)
-    rust = { "rustfmt", lsp_format = "fallback" },
-    -- Conform will run the first available formatter
+    rust = { "rustfmt" },
+    go = { "gofmt", "goimports" },
+    c = { "clang_format" },
+    cpp = { "clang_format" },
     javascript = { "prettierd", "prettier", stop_after_first = true },
+  },
+  format_on_save = {
+    timeout_ms = 500,
+    lsp_fallback = true,
   },
 })
 
@@ -584,7 +726,177 @@ undotree.setup({
 EOF
 
 lua << EOF
-vim.opt.termguicolors = true
-require("notify").setup()
-require("telescope").load_extension("notify")
+require('orgmode').setup({
+  org_agenda_files = '~/orgfiles/**/*',
+  org_default_notes_file = '~/orgfiles/refile.org',
+})
+EOF
+
+lua << EOF
+-- nvim-notify setup
+require("notify").setup({
+  -- Animation style (see below for options)
+  stages = "fade_in_slide_out",
+  
+  -- Function called when a new window is opened, use for changing win settings/config
+  on_open = nil,
+  
+  -- Function called when a window is closed
+  on_close = nil,
+  
+  -- Render function for notifications. See notify-render()
+  render = "default",
+  
+  -- Default timeout for notifications
+  timeout = 5000,
+  
+  -- For stages that change opacity this is treated as the highlight behind the window
+  -- Set this to either a highlight group, an RGB hex value e.g. "#000000" or a function returning an RGB code for dynamic values
+  background_colour = "Normal",
+  
+  -- Minimum width for notification windows
+  minimum_width = 50,
+  
+  -- Icons for the different levels
+  icons = {
+    ERROR = "",
+    WARN = "",
+    INFO = "",
+    DEBUG = "",
+    TRACE = "✎",
+  },
+})
+
+-- Set nvim-notify as the default notification handler
+vim.notify = require("notify")
+EOF
+
+lua << EOF
+require("neotest").setup({
+  adapters = {
+    require("neotest-python")({
+      dap = { justMyCode = false },
+      python = ".venv/bin/python",
+      pytest_discover_instances = true,
+    }),
+    require("neotest-go")({
+      experimental = {
+        test_table = true,
+      },
+      args = { "-count=1", "-timeout=60s" }
+    }),
+    require("neotest-rust")({
+      args = { "--no-capture" },
+      dap_adapter = "codelldb",
+    }),
+  },
+  discovery = {
+    enabled = true,
+    concurrent = 1,
+  },
+  running = {
+    concurrent = true,
+  },
+  summary = {
+    enabled = true,
+    animated = true,
+    follow = true,
+    expand_errors = true,
+    open = "botright vsplit | vertical resize 50",
+  },
+  output = {
+    enabled = true,
+    open_on_run = "short",
+  },
+  output_panel = {
+    enabled = true,
+    open = "botright split | resize 15",
+  },
+  quickfix = {
+    enabled = true,
+    open = false,
+  },
+  status = {
+    enabled = true,
+    virtual_text = true,
+    signs = true,
+  },
+  strategies = {
+    integrated = {
+      height = 40,
+      width = 120,
+    },
+  },
+  icons = {
+    child_indent = "│",
+    child_prefix = "├",
+    collapsed = "─",
+    expanded = "╮",
+    failed = "✖",
+    final_child_indent = " ",
+    final_child_prefix = "╰",
+    non_collapsible = "─",
+    passed = "✓",
+    running = "🗘",
+    running_animated = { "/", "|", "\\", "-", "/", "|", "\\", "-" },
+    skipped = "○",
+    unknown = "?",
+  },
+  highlights = {
+    adapter_name = "NeotestAdapterName",
+    border = "NeotestBorder",
+    dir = "NeotestDir",
+    expand_marker = "NeotestExpandMarker",
+    failed = "NeotestFailed",
+    file = "NeotestFile",
+    focused = "NeotestFocused",
+    indent = "NeotestIndent",
+    marked = "NeotestMarked",
+    namespace = "NeotestNamespace",
+    passed = "NeotestPassed",
+    running = "NeotestRunning",
+    select_win = "NeotestWinSelect",
+    skipped = "NeotestSkipped",
+    target = "NeotestTarget",
+    test = "NeotestTest",
+    unknown = "NeotestUnknown",
+  },
+})
+EOF
+
+lua << EOF
+-- Neovim-project setup
+require("neovim-project").setup({
+  projects = { -- define project roots
+    "~/Documents/*",
+    "~/CLionProjects/*",
+    "~/PycharmProjects/*",
+  },
+  -- Load the most recent session on startup if not in a project dir
+  last_session_on_startup = true,
+  -- Dashboard mode prevent session autoload on startup
+  dashboard_mode = false,
+  -- Timeout in milliseconds before trigger FileType autocmd after session load
+  -- to make sure lsp servers are attached to the current buffer.
+  -- Set to 0 to disable triggering FileType autocmd
+  filetype_autocmd_timeout = 200,
+  -- Set to true to enable line numbers and fold columns for sessions
+  session_manager_opts = {
+    autosave_ignore_dirs = {
+      vim.fn.expand("~"), -- Don't create a session for $HOME/
+      "/tmp",
+    },
+    autosave_ignore_filetypes = {
+      -- All buffers of these file types will be closed before the session is saved
+      "ccc-ui",
+      "gitcommit",
+      "gitrebase",
+      "qf",
+      "toggleterm",
+    },
+  },
+})
+
+-- Enable telescope extension
+require('telescope').load_extension('neovim-project')
 EOF
