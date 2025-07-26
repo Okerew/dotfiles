@@ -18,6 +18,8 @@ qwen coder - ollama run qwen2.5-coder:7b
 
 Features:
 
+Outline shows the structure of the file
+
 Database client - allows you to connect to databases
 
 Docker client - allows you to manage containers
