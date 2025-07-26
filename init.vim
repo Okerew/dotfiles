@@ -42,6 +42,7 @@ Plug 'jcha0713/cmp-tw2css'
 Plug 'David-Kunz/cmp-npm'
 Plug 'saecki/crates.nvim', { 'tag': 'stable' }
 Plug 'hat0uma/csvview.nvim'
+Plug 'brianhuster/live-preview.nvim'
 
 call plug#end()
 
@@ -108,6 +109,7 @@ noremap <leader>tl :Telescope live_grep<CR>
 noremap <leader>db :lua require("dbee").toggle()<CR>
 noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
 noremap <leader>l :SymbolsOutline<CR>
+noremap <leader>p :LivePreview start<CR>
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
