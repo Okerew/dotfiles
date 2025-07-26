@@ -36,6 +36,8 @@ Hopping support
 
 Fzf support
 
+Remote ssh connection, live share feature like in vscode 
+
 And many more!
 
 ----
