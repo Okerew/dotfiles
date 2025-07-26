@@ -40,7 +40,8 @@ Plug 'nvim-neotest/nvim-nio'
 Plug 'nvim-neotest/neotest-python'
 Plug 'nvim-neotest/neotest-go'
 Plug 'rouge8/neotest-rust'
-Plug 'nvimdev/dashboard-nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'kndndrj/nvim-dbee'
 
 call plug#end()
 
@@ -112,6 +113,9 @@ nnoremap <leader>tO :lua require("neotest").output_panel.toggle()<CR>
 nnoremap <leader>td :lua require("neotest").run.run({strategy = "dap"})<CR>
 noremap <leader>p :Telescope neovim-project discover<CR>
 noremap <leader>ph :Telescope neovim-project history<CR>
+noremap <leader>db :lua require("dbee").toggle()<CR>
+noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
+
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
@@ -422,8 +426,8 @@ require("mason-lspconfig").setup({
         "cssls",
         "jsonls",
         "html",
-        "lua_ls"
-    },
+        "lua_ls",
+	},
     automatic_installation = true,
 })
 
@@ -491,62 +495,64 @@ cmp.setup({
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
+    -- Add Tab and Shift-Tab for better navigation
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   }),
 
   sources = cmp.config.sources({
-    { name = "nvim_lsp" },
+    { name = "nvim_lsp", priority = 1000 },
+    { name = "nvim_lsp_signature_help", priority = 800 },
+    { name = "path", priority = 600 },  -- Add path completion here
   }, {
-    { name = "buffer" },
-    },{ 
-    { name = 'nvim_lsp_signature_help' }
-    }),
+    { name = "buffer", priority = 400, keyword_length = 3 },
+  }),
+
+  -- Optional: Add formatting to show source in completion menu
+  formatting = {
+    format = function(entry, vim_item)
+      -- Add source indicator
+      vim_item.menu = ({
+        nvim_lsp = "[LSP]",
+        nvim_lsp_signature_help = "[Sig]",
+        buffer = "[Buf]",
+        path = "[Path]",
+      })[entry.source.name]
+      return vim_item
+    end,
+  },
+
+  -- Performance settings
+  performance = {
+    debounce = 60,
+    throttle = 30,
+    fetching_timeout = 500,
+    confirm_resolve_timeout = 80,
+    async_budget = 1,
+    max_view_entries = 200,
+  },
 })
 
--- LSP capabilities with nvim-cmp
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- Set configuration for specific filetypes where path completion is especially useful
+cmp.setup.filetype({ "gitcommit", "markdown" }, {
+  sources = cmp.config.sources({
+    { name = "path", priority = 800 },
+    { name = "buffer", priority = 600 },
+  })
+})
 
--- Setup LSP servers with Mason integration
-local lspconfig = require("lspconfig")
-local servers = { "pyright", "clangd", "rust_analyzer", "ts_ls", "bashls", "cssls", "jsonls", "html", "lua_ls" }
-
-for _, lsp in ipairs(servers) do
-  local opts = {
-    capabilities = capabilities,
-  }
-  
-  -- Special configuration for lua_ls
-  if lsp == "lua_ls" then
-    opts.settings = {
-      Lua = {
-        runtime = {
-          version = "LuaJIT",
-        },
-        diagnostics = {
-          globals = { "vim" },
-        },
-        workspace = {
-          library = vim.api.nvim_get_runtime_file("", true),
-          checkThirdParty = false,
-        },
-        telemetry = {
-          enable = false,
-        },
-      },
-    }
-  elseif lsp == "clangd" then
-    opts.cmd = {
-      "clangd",
-      "--background-index",
-      "--clang-tidy",
-      "--header-insertion=iwyu",
-      "--completion-style=detailed",
-      "--function-arg-placeholders",
-      "--fallback-style=llvm",
-    }
-  end
-  
-  lspconfig[lsp].setup(opts)
-end
 EOF
 
 lua <<EOF
@@ -794,65 +800,107 @@ require("neotest").setup({
 })
 EOF
 
+noremap <leader>db :lua require("dbee").toggle()<CR>
+noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
+noremap <leader>dba :lua _G.add_postgres_connection()<CR>
 
 lua << EOF
-require('dashboard').setup {
-  theme = 'hyper',
-  config = {
-    week_header = {
-     enable = true,
-    },
-    shortcut = {
-      { desc = '󰊳 Update', group = '@property', action = 'PlugUpdate', key = 'u' },
-      {
-        icon = ' ',
-        icon_hl = '@variable',
-        desc = 'Files',
-        group = 'Label',
-        action = 'Telescope find_files',
-        key = 'f',
-      },
-      {
-        desc = ' Projects',
-        group = 'DiagnosticHint',
-        action = 'Telescope neovim-project discover',
-        key = 'p',
-      },
-      {
-        desc = ' Live Grep',
-        group = 'Number',
-        action = 'Telescope live_grep',
-        key = 'g',
-      },
-      {
-        desc = ' New File',
-        group = 'DiagnosticHint',
-        action = 'ene | startinsert',
-        key = 'n',
-      },
-      {
-        desc = ' Config',
-        group = 'Number',
-        action = 'edit ~/.config/nvim/init.vim',
-        key = 'c',
-      },
-    },
-    project = {
-      enable = true,
-      limit = 8,
-      icon = ' ',
-      label = ' Recent Projects:',
-      action = 'Telescope find_files cwd='
-    },
-    mru = {
-      limit = 10,
-      icon = ' ',
-      label = ' Recent Files:',
-      cwd_only = false,
-    },
-    footer = function()
-      return { "Config built by Okerew enjoy!" }
-    end,
-  },
-}
+-- Simple function to add PostgreSQL connection
+function _G.add_postgres_connection()
+  local function get_input(prompt, default, secret)
+    if secret then
+      vim.fn.inputsave()
+      local result = vim.fn.inputsecret(prompt .. ": ")
+      vim.fn.inputrestore()
+      return result
+    else
+      local result = vim.fn.input(prompt .. (default and " [" .. default .. "]: " or ": "))
+      return result ~= "" and result or default
+    end
+  end
+
+  -- Get connection details
+  local name = get_input("Connection name", "postgres_local")
+  if name == "" then
+    vim.notify("Connection name is required", vim.log.levels.ERROR)
+    return
+  end
+
+  local host = get_input("Host", "localhost")
+  local port = get_input("Port", "5432")
+  local database = get_input("Database name")
+  if database == "" then
+    vim.notify("Database name is required", vim.log.levels.ERROR)
+    return
+  end
+
+  local username = get_input("Username")
+  if username == "" then
+    vim.notify("Username is required", vim.log.levels.ERROR)
+    return
+  end
+
+  local password = get_input("Password", nil, true)
+  if password == "" then
+    vim.notify("Password is required", vim.log.levels.ERROR)
+    return
+  end
+
+  -- Create connection URL
+  local connection_url = string.format("postgresql://%s:%s@%s:%s/%s", username, password, host, port, database)
+  
+  -- Set environment variable that dbee can read
+  vim.env.DBEE_CONNECTIONS = vim.json.encode({{
+    id = name,
+    name = name,
+    type = "postgres",
+    url = connection_url
+  }})
+  
+  vim.notify("Connection '" .. name .. "' created!", vim.log.levels.INFO)
+  vim.notify("Use <leader>db to open dbee", vim.log.levels.INFO)
+end
+
+-- Very minimal dbee setup - let it use defaults
+local ok, dbee = pcall(require, "dbee")
+if ok then
+  -- Try the most basic setup possible
+  pcall(function()
+    dbee.setup({
+      sources = {},  -- Start with empty sources to avoid registration errors
+    })
+  end)
+else
+  vim.notify("DBee plugin not found. Run :PlugInstall", vim.log.levels.WARN)
+end
+
+-- Simple commands
+vim.api.nvim_create_user_command('DBConnect', function()
+  local ok, dbee = pcall(require, "dbee")
+  if ok then
+    dbee.toggle()
+  else
+    vim.notify("DBee plugin not available", vim.log.levels.ERROR)
+  end
+end, { desc = "Toggle DBee interface" })
+
+vim.api.nvim_create_user_command('DBAddPostgres', function()
+  _G.add_postgres_connection()
+end, { desc = "Add PostgreSQL connection" })
+
+-- Alternative manual connection method
+vim.api.nvim_create_user_command('DBConnectManual', function(opts)
+  if opts.args == "" then
+    local url = vim.fn.input("PostgreSQL URL (postgresql://user:pass@host:port/db): ")
+    if url ~= "" then
+      vim.env.DBEE_CONNECTIONS = vim.json.encode({{
+        id = "manual",
+        name = "manual",
+        type = "postgres", 
+        url = url
+      }})
+      vim.notify("Manual connection set. Use :DBConnect", vim.log.levels.INFO)
+    end
+  end
+end, { nargs = '*', desc = "Set manual connection" })
 EOF
