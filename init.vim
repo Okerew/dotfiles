@@ -494,6 +494,24 @@ require("notify").setup({
 
 -- Set nvim-notify as the default notification handler
 vim.notify = require("notify")
+
+local blocked_prefixes = {
+  "config.mappings.show_system_prompt",
+  "config.mappings.show_user_selection",
+  "'canary' branch is deprecated",
+}
+
+vim.notify = function(msg, level, opts)
+  for _, prefix in ipairs(blocked_prefixes) do
+    if msg:sub(1, #prefix) == prefix then
+      return
+    end
+  end
+  vim.schedule(function()
+    vim.api.nvim_echo({{msg}}, true, {})
+  end)
+end
+
 EOF
 
 noremap <leader>db :lua require("dbee").toggle()<CR>
