@@ -38,6 +38,10 @@ Plug 'kndndrj/nvim-dbee'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'github/copilot.vim'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'jcha0713/cmp-tw2css'
+Plug 'David-Kunz/cmp-npm'
+Plug 'saecki/crates.nvim', { 'tag': 'stable' }
+Plug 'hat0uma/csvview.nvim'
 
 call plug#end()
 
@@ -48,6 +52,7 @@ set number                    " Show line numbers
 colorscheme github_light      " Default colorscheme
 :setlocal spell
 :setlocal spelllang=en_us
+autocmd BufReadPost,BufNewFile * Copilot disable
 
 " === KEYMAPS ===
 " Buffer navigation
@@ -317,6 +322,8 @@ end
 vim.defer_fn(ensure_installed, 100)
 EOF
 
+lua require('crates').setup()
+lua require('cmp-npm').setup({})
 
 lua <<EOF
 local cmp = require("cmp")
@@ -356,8 +363,9 @@ cmp.setup({
     { name = "nvim_lsp", priority = 1000 },
     { name = "nvim_lsp_signature_help", priority = 800 },
     { name = "path", priority = 600 },  
-  }, {
     { name = "buffer", priority = 400, keyword_length = 3 },
+    { name = "cmp-tw2css" },
+    { name = "npm" },
   }),
 
   -- Performance settings
@@ -823,4 +831,14 @@ require("CopilotChat").setup {
     },
   },
 }
+EOF
+
+lua require('csvview').setup()
+
+" Depramanager setup
+
+lua << EOF
+vim.keymap.set("n", "<leader>dp", function() require("depramanager").python() end, { desc = "Outdated Python Packages" })
+vim.keymap.set("n", "<leader>dg", function() require("depramanager").go() end, { desc = "Outdated Go Modules" })
+vim.keymap.set("n", "<leader>dn", function() require("depramanager").npm() end, { desc = "Outdated npm Packages" })
 EOF
