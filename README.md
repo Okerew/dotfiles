@@ -26,8 +26,6 @@ Lsp completion
 
 Many usefull macros and keybinds
 
-Testing client
-
 Formatter, Linting support
 
 Tex support
