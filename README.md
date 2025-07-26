@@ -38,6 +38,8 @@ Fzf support
 
 Remote ssh connection, live share feature like in vscode 
 
+Also github copilot though i only use it for the chat feauture as I started to have ai completions you can do the same with :Copilot disable the chat still should work.
+
 And many more!
 
 ----
