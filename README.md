@@ -10,8 +10,6 @@ zathura
 
 nvim 0.11
 
-ollama
-
 qwen coder - ollama run qwen2.5-coder:7b
 
 ----- 
