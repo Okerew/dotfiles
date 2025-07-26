@@ -427,6 +427,7 @@ require("mason-lspconfig").setup({
         "jsonls",
         "html",
         "lua_ls",
+	"gopls",
 	},
     automatic_installation = true,
 })
@@ -453,7 +454,7 @@ local function ensure_installed()
         
         -- Go tools
         "goimports",
-        "golangci-lint",
+	"golangci-lint",
         
         -- Rust tools
         "rustfmt",
@@ -515,24 +516,10 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = "nvim_lsp", priority = 1000 },
     { name = "nvim_lsp_signature_help", priority = 800 },
-    { name = "path", priority = 600 },  -- Add path completion here
+    { name = "path", priority = 600 },  
   }, {
     { name = "buffer", priority = 400, keyword_length = 3 },
   }),
-
-  -- Optional: Add formatting to show source in completion menu
-  formatting = {
-    format = function(entry, vim_item)
-      -- Add source indicator
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        nvim_lsp_signature_help = "[Sig]",
-        buffer = "[Buf]",
-        path = "[Path]",
-      })[entry.source.name]
-      return vim_item
-    end,
-  },
 
   -- Performance settings
   performance = {
