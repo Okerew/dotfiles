@@ -23,7 +23,6 @@ Plug 'nvim-orgmode/orgmode'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'cormacrelf/dark-notify'
 Plug 'jbyuki/instant.nvim'
-Plug 'Civitasv/cmake-tools.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
@@ -35,11 +34,6 @@ Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'rcarriga/nvim-notify'
-Plug 'nvim-neotest/neotest'
-Plug 'nvim-neotest/nvim-nio'
-Plug 'nvim-neotest/neotest-python'
-Plug 'nvim-neotest/neotest-go'
-Plug 'rouge8/neotest-rust'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'kndndrj/nvim-dbee'
 
@@ -104,21 +98,13 @@ noremap <leader>[ :tab new<CR>
 noremap <leader>] :bd<CR>
 nnoremap <leader>m :CodeCompanion<CR>
 noremap <leader>u :lua require('undotree').toggle()<CR>
-noremap <leader>l :Telescope live_grep<CR>
-nnoremap <leader>tt :lua require("neotest").run.run()<CR>
-nnoremap <leader>tf :lua require("neotest").run.run(vim.fn.expand("%"))<CR>
-nnoremap <leader>ts :lua require("neotest").summary.toggle()<CR>
-nnoremap <leader>to :lua require("neotest").output.open({ enter = true })<CR>
-nnoremap <leader>tO :lua require("neotest").output_panel.toggle()<CR>
-nnoremap <leader>td :lua require("neotest").run.run({strategy = "dap"})<CR>
-noremap <leader>p :Telescope neovim-project discover<CR>
-noremap <leader>ph :Telescope neovim-project history<CR>
+noremap <leader>tl :Telescope live_grep<CR>
 noremap <leader>db :lua require("dbee").toggle()<CR>
 noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
 
-
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
+command! -nargs=* Ha HopAnywhere <args> 
 
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
 
@@ -248,155 +234,6 @@ let g:ale_linters = {
 \   'rust': ['clippy'],
 \}
 
-lua << EOF
-local osys = require("cmake-tools.osys")
-require("cmake-tools").setup {
-  cmake_command = "cmake", -- this is used to specify cmake command path
-  ctest_command = "ctest", -- this is used to specify ctest command path
-  cmake_use_preset = true,
-  cmake_regenerate_on_save = true, -- auto generate when save CMakeLists.txt
-  cmake_generate_options = { "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
-  cmake_build_options = {}, -- this will be passed when invoke `CMakeBuild`
-  -- support macro expansion:
-  --       ${kit}
-  --       ${kitGenerator}
-  --       ${variant:xx}
-  cmake_build_directory = function()
-    if osys.iswin32 then
-      return "out\\${variant:buildType}"
-    end
-    return "out/${variant:buildType}"
-  end, -- this is used to specify generate directory for cmake, allows macro expansion, can be a string or a function returning the string, relative to cwd.
-  cmake_compile_commands_options = {
-    action = "soft_link", -- available options: soft_link, copy, lsp, none
-                          -- soft_link: this will automatically make a soft link from compile commands file to target
-                          -- copy:      this will automatically copy compile commands file to target
-                          -- lsp:       this will automatically set compile commands file location using lsp
-                          -- none:      this will make this option ignored
-    target = vim.loop.cwd() -- path to directory, this is used only if action == "soft_link" or action == "copy"
-  },
-  cmake_kits_path = nil, -- this is used to specify global cmake kits path, see CMakeKits for detailed usage
-  cmake_variants_message = {
-    short = { show = true }, -- whether to show short message
-    long = { show = true, max_length = 40 }, -- whether to show long message
-  },
-  cmake_dap_configuration = { -- debug settings for cmake
-    name = "cpp",
-    type = "codelldb",
-    request = "launch",
-    stopOnEntry = false,
-    runInTerminal = true,
-    console = "integratedTerminal",
-  },
-  cmake_executor = { -- executor to use
-    name = "quickfix", -- name of the executor
-    opts = {}, -- the options the executor will get, possible values depend on the executor type. See `default_opts` for possible values.
-    default_opts = { -- a list of default and possible values for executors
-      quickfix = {
-        show = "always", -- "always", "only_on_error"
-        position = "belowright", -- "vertical", "horizontal", "leftabove", "aboveleft", "rightbelow", "belowright", "topleft", "botright", use `:h vertical` for example to see help on them
-        size = 10,
-        encoding = "utf-8", -- if encoding is not "utf-8", it will be converted to "utf-8" using `vim.fn.iconv`
-        auto_close_when_success = true, -- typically, you can use it with the "always" option; it will auto-close the quickfix buffer if the execution is successful.
-      },
-      toggleterm = {
-        direction = "float", -- 'vertical' | 'horizontal' | 'tab' | 'float'
-        close_on_exit = false, -- whether close the terminal when exit
-        auto_scroll = true, -- whether auto scroll to the bottom
-        singleton = true, -- single instance, autocloses the opened one, if present
-      },
-      overseer = {
-        new_task_opts = {
-            strategy = {
-                "toggleterm",
-                direction = "horizontal",
-                auto_scroll = true,
-                quit_on_exit = "success"
-            }
-        }, -- options to pass into the `overseer.new_task` command
-        on_new_task = function(task)
-            require("overseer").open(
-                { enter = false, direction = "right" }
-            )
-        end,   -- a function that gets overseer.Task when it is created, before calling `task:start`
-      },
-      terminal = {
-        name = "Main Terminal",
-        prefix_name = "[CMakeTools]: ", -- This must be included and must be unique, otherwise the terminals will not work. Do not use a simple spacebar " ", or any generic name
-        split_direction = "horizontal", -- "horizontal", "vertical"
-        split_size = 11,
-
-        -- Window handling
-        single_terminal_per_instance = true, -- Single viewport, multiple windows
-        single_terminal_per_tab = true, -- Single viewport per tab
-        keep_terminal_static_location = true, -- Static location of the viewport if avialable
-        auto_resize = true, -- Resize the terminal if it already exists
-
-        -- Running Tasks
-        start_insert = false, -- If you want to enter terminal with :startinsert upon using :CMakeRun
-        focus = false, -- Focus on terminal when cmake task is launched.
-        do_not_add_newline = false, -- Do not hit enter on the command inserted when using :CMakeRun, allowing a chance to review or modify the command before hitting enter.
-      }, -- terminal executor uses the values in cmake_terminal
-    },
-  },
-  cmake_runner = { -- runner to use
-    name = "terminal", -- name of the runner
-    opts = {}, -- the options the runner will get, possible values depend on the runner type. See `default_opts` for possible values.
-    default_opts = { -- a list of default and possible values for runners
-      quickfix = {
-        show = "always", -- "always", "only_on_error"
-        position = "belowright", -- "bottom", "top"
-        size = 10,
-        encoding = "utf-8",
-        auto_close_when_success = true, -- typically, you can use it with the "always" option; it will auto-close the quickfix buffer if the execution is successful.
-      },
-      toggleterm = {
-        direction = "float", -- 'vertical' | 'horizontal' | 'tab' | 'float'
-        close_on_exit = false, -- whether close the terminal when exit
-        auto_scroll = true, -- whether auto scroll to the bottom
-        singleton = true, -- single instance, autocloses the opened one, if present
-      },
-      overseer = {
-        new_task_opts = {
-            strategy = {
-                "toggleterm",
-                direction = "horizontal",
-                autos_croll = true,
-                quit_on_exit = "success"
-            }
-        }, -- options to pass into the `overseer.new_task` command
-        on_new_task = function(task)
-        end,   -- a function that gets overseer.Task when it is created, before calling `task:start`
-      },
-      terminal = {
-        name = "Main Terminal",
-        prefix_name = "[CMakeTools]: ", -- This must be included and must be unique, otherwise the terminals will not work. Do not use a simple spacebar " ", or any generic name
-        split_direction = "horizontal", -- "horizontal", "vertical"
-        split_size = 11,
-
-        -- Window handling
-        single_terminal_per_instance = true, -- Single viewport, multiple windows
-        single_terminal_per_tab = true, -- Single viewport per tab
-        keep_terminal_static_location = true, -- Static location of the viewport if avialable
-        auto_resize = true, -- Resize the terminal if it already exists
-
-        -- Running Tasks
-        start_insert = false, -- If you want to enter terminal with :startinsert upon using :CMakeRun
-        focus = false, -- Focus on terminal when cmake task is launched.
-        do_not_add_newline = false, -- Do not hit enter on the command inserted when using :CMakeRun, allowing a chance to review or modify the command before hitting enter.
-      },
-    },
-  },
-  cmake_notifications = {
-    runner = { enabled = true },
-    executor = { enabled = true },
-    spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }, -- icons used for progress display
-    refresh_rate_ms = 100, -- how often to iterate icons
-  },
-  cmake_virtual_text_support = true, -- Show the target related to current file using virtual text (at right corner)
-  cmake_use_scratch_buffer = false, -- A buffer that shows what cmake-tools has done
-}
-EOF
 
 lua << EOF
 require("distant"):setup()
@@ -692,99 +529,6 @@ require("notify").setup({
 
 -- Set nvim-notify as the default notification handler
 vim.notify = require("notify")
-EOF
-
-lua << EOF
-require("neotest").setup({
-  adapters = {
-    require("neotest-python")({
-      dap = { justMyCode = false },
-      python = ".venv/bin/python",
-      pytest_discover_instances = true,
-    }),
-    require("neotest-go")({
-      experimental = {
-        test_table = true,
-      },
-      args = { "-count=1", "-timeout=60s" }
-    }),
-    require("neotest-rust")({
-      args = { "--no-capture" },
-      dap_adapter = "codelldb",
-    }),
-  },
-  discovery = {
-    enabled = true,
-    concurrent = 1,
-  },
-  running = {
-    concurrent = true,
-  },
-  summary = {
-    enabled = true,
-    animated = true,
-    follow = true,
-    expand_errors = true,
-    open = "botright vsplit | vertical resize 50",
-  },
-  output = {
-    enabled = true,
-    open_on_run = "short",
-  },
-  output_panel = {
-    enabled = true,
-    open = "botright split | resize 15",
-  },
-  quickfix = {
-    enabled = true,
-    open = false,
-  },
-  status = {
-    enabled = true,
-    virtual_text = true,
-    signs = true,
-  },
-  strategies = {
-    integrated = {
-      height = 40,
-      width = 120,
-    },
-  },
-  icons = {
-    child_indent = "│",
-    child_prefix = "├",
-    collapsed = "─",
-    expanded = "╮",
-    failed = "✖",
-    final_child_indent = " ",
-    final_child_prefix = "╰",
-    non_collapsible = "─",
-    passed = "✓",
-    running = "🗘",
-    running_animated = { "/", "|", "\\", "-", "/", "|", "\\", "-" },
-    skipped = "○",
-    unknown = "?",
-  },
-  highlights = {
-    adapter_name = "NeotestAdapterName",
-    border = "NeotestBorder",
-    dir = "NeotestDir",
-    expand_marker = "NeotestExpandMarker",
-    failed = "NeotestFailed",
-    file = "NeotestFile",
-    focused = "NeotestFocused",
-    indent = "NeotestIndent",
-    marked = "NeotestMarked",
-    namespace = "NeotestNamespace",
-    passed = "NeotestPassed",
-    running = "NeotestRunning",
-    select_win = "NeotestWinSelect",
-    skipped = "NeotestSkipped",
-    target = "NeotestTarget",
-    test = "NeotestTest",
-    unknown = "NeotestUnknown",
-  },
-})
 EOF
 
 noremap <leader>db :lua require("dbee").toggle()<CR>
