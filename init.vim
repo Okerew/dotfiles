@@ -26,7 +26,6 @@ Plug 'jbyuki/instant.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
-Plug 'olimorris/codecompanion.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'goerz/jupytext.nvim'
 Plug 'jiaoshijie/undotree'
@@ -37,6 +36,8 @@ Plug 'rcarriga/nvim-notify'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'kndndrj/nvim-dbee'
 Plug 'simrat39/symbols-outline.nvim'
+Plug 'github/copilot.vim'
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 
 call plug#end()
 
@@ -97,7 +98,6 @@ noremap <leader>f :Telescope find_files<CR>
 noremap <leader>t :NvimTreeOpen<CR>
 noremap <leader>[ :tab new<CR>
 noremap <leader>] :bd<CR>
-nnoremap <leader>m :CodeCompanion<CR>
 noremap <leader>u :lua require('undotree').toggle()<CR>
 noremap <leader>tl :Telescope live_grep<CR>
 noremap <leader>db :lua require("dbee").toggle()<CR>
@@ -407,43 +407,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 EOF
 
 lua << EOF
-require("codecompanion").setup({
-  strategies = {
-    chat = {
-      adapter = 'qwen',
-    },
-    inline = {
-      adapter = 'qwen',
-    },
-  },
-  adapters = {
-    qwen = function()
-      return require('codecompanion.adapters').extend('ollama', {
-        name = 'qwen',
-        schema = {
-          model = {
-            default = 'qwen2.5-coder:7b',
-          },
-        },
-      })
-    end,
-  },
-  opts = {
-    log_level = 'DEBUG',
-  },
-  display = {
-    diff = {
-      enabled = true,
-      close_chat_at = 240,
-      layout = 'vertical',
-      opts = { 'internal', 'filler', 'closeoff', 'algorithm:patience', 'followwrap', 'linematch:120' },
-      provider = 'default',
-    },
-  },
-})
-EOF
-
-lua << EOF
 require("nvim-tree").setup()
 EOF
 
@@ -510,7 +473,7 @@ require("notify").setup({
   render = "default",
   
   -- Default timeout for notifications
-  timeout = 5000,
+  timeout = 500,
   
   -- For stages that change opacity this is treated as the highlight behind the window
   -- Set this to either a highlight group, an RGB hex value e.g. "#000000" or a function returning an RGB code for dynamic values
@@ -703,4 +666,143 @@ local opts = {
   },
 }
 require("symbols-outline").setup(opts)
+EOF
+
+nnoremap <leader>cc :CopilotChat<CR>
+nnoremap <leader>cce :CopilotChatExplain<CR>
+nnoremap <leader>ccr :CopilotChatReview<CR>
+nnoremap <leader>ccf :CopilotChatFix<CR>
+nnoremap <leader>cco :CopilotChatOptimize<CR>
+nnoremap <leader>ccd :CopilotChatDocs<CR>
+nnoremap <leader>cct :CopilotChatTests<CR>
+nnoremap <leader>ccq :CopilotChatClose<CR>
+vnoremap <leader>cc :CopilotChatVisual<CR>
+vnoremap <leader>cce :CopilotChatExplain<CR>
+
+" Add this Lua configuration block after your other Lua configs
+lua << EOF
+require("CopilotChat").setup {
+  debug = false, -- Enable debugging
+  
+  -- See Configuration section for rest
+  model = 'gpt-4', -- GPT model to use, 'gpt-3.5-turbo' or 'gpt-4'
+  
+  -- System prompts
+  system_prompt = "You are a helpful AI assistant. You explain code, suggest improvements, and help with programming tasks.",
+  
+  -- Chat window configuration
+  window = {
+    layout = 'vertical', -- 'vertical', 'horizontal', 'float', 'replace'
+    width = 0.5, -- fractional width of parent, or absolute width in columns when > 1
+    height = 0.5, -- fractional height of parent, or absolute height in rows when > 1
+    -- Options below only apply to floating windows
+    relative = 'editor', -- 'editor', 'win', 'cursor', 'mouse'
+    border = 'single', -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
+    row = nil, -- row position of the window, default is centered
+    col = nil, -- column position of the window, default is centered
+    title = 'Copilot Chat', -- title of chat window
+    footer = nil, -- footer of chat window
+    zindex = 1, -- determines if window is on top or below other floating windows
+  },
+
+  -- Chat configuration
+  chat = {
+    welcome_message = "Hello! I'm your AI coding assistant. How can I help you today?",
+    loading_text = "Loading, please wait ...",
+    question_sign = "", -- 🙂
+    answer_sign = "ﮧ", -- 🤖
+    border_follow_highlight = true, -- follow color of border
+    error_header = "Error: ",
+    separator = " ", -- separator to use in chat
+    show_folds = true, -- Shows folds for sections in chat
+    show_help = true, -- Shows help message as virtual lines when waiting for user input
+    auto_follow_cursor = true, -- Auto-follow cursor in chat
+    auto_insert_mode = false, -- Automatically enter insert mode when opening window and if auto follow cursor is enabled on new prompt
+    insert_at_end = false, -- Move cursor to end of buffer when inserting text
+    clear_chat_on_new_prompt = false, -- Clears chat on every new prompt
+    highlight_selection = true, -- Highlight selection in the source buffer when in the chat window
+  },
+
+  -- Context configuration
+  context = 'buffer', -- Default context to use, 'buffers', 'buffer' or none (can be specified manually in prompt via @).
+  history_path = vim.fn.stdpath('data') .. '/copilotchat_history', -- Default path to stored history
+  callback = nil, -- Callback to use when ask response is received
+
+  -- default selection (visual or line)
+  selection = function(source)
+    return require("CopilotChat.select").visual(source) or require("CopilotChat.select").line(source)
+  end,
+
+  -- default prompts
+  prompts = {
+    Explain = {
+      prompt = '/COPILOT_EXPLAIN Write an explanation for the active selection as paragraphs of text.',
+    },
+    Review = {
+      prompt = '/COPILOT_REVIEW Review the selected code.',
+      callback = function(response, source)
+        -- see config.lua for implementation
+      end,
+    },
+    Fix = {
+      prompt = '/COPILOT_GENERATE There is a problem in this code. Rewrite the code to show it with the bug fixed.',
+    },
+    Optimize = {
+      prompt = '/COPILOT_GENERATE Optimize the selected code to improve performance and readablilty.',
+    },
+    Docs = {
+      prompt = '/COPILOT_GENERATE Please add documentation comment for the selection.',
+    },
+    Tests = {
+      prompt = '/COPILOT_GENERATE Please generate tests for my code.',
+    },
+    FixDiagnostic = {
+      prompt = 'Please assist with the following diagnostic issue in file:',
+      selection = require('CopilotChat.select').diagnostics,
+    },
+    Commit = {
+      prompt = 'Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.',
+      selection = require('CopilotChat.select').gitdiff,
+    },
+    CommitStaged = {
+      prompt = 'Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.',
+      selection = function(source)
+        return require('CopilotChat.select').gitdiff(source, true)
+      end,
+    },
+  },
+
+  -- default mappings
+  mappings = {
+    complete = {
+      detail = 'Use @<Tab> or /<Tab> for options.',
+      insert ='<Tab>',
+    },
+    close = {
+      normal = 'q',
+      insert = '<C-c>'
+    },
+    reset = {
+      normal ='<C-l>',
+      insert = '<C-l>'
+    },
+    submit_prompt = {
+      normal = '<CR>',
+      insert = '<C-s>'
+    },
+    accept_diff = {
+      normal = '<C-y>',
+      insert = '<C-y>'
+    },
+    show_diff = {
+      normal = 'gd'
+    },
+    show_system_prompt = {
+      normal = 'gp'
+    },
+    show_user_selection = {
+      normal = 'gs'
+    },
+  },
+}
 EOF
