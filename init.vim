@@ -43,6 +43,7 @@ Plug 'David-Kunz/cmp-npm'
 Plug 'saecki/crates.nvim', { 'tag': 'stable' }
 Plug 'hat0uma/csvview.nvim'
 Plug 'brianhuster/live-preview.nvim'
+Plug 'Okerew/depramanager-nvim'
 
 call plug#end()
 
@@ -840,7 +841,16 @@ lua require('csvview').setup()
 " Depramanager setup
 
 lua << EOF
-vim.keymap.set("n", "<leader>dp", function() require("depramanager").python() end, { desc = "Outdated Python Packages" })
-vim.keymap.set("n", "<leader>dg", function() require("depramanager").go() end, { desc = "Outdated Go Modules" })
-vim.keymap.set("n", "<leader>dn", function() require("depramanager").npm() end, { desc = "Outdated npm Packages" })
+local depramanager = require('depramanager')
+
+-- Enable auto-highlighting
+depramanager.setup()
+
+-- Bind telescope functions to keys
+vim.keymap.set('n', '<leader>dp', depramanager.python_telescope, { desc = 'Outdated Python packages' })
+vim.keymap.set('n', '<leader>dg', depramanager.go_telescope, { desc = 'Outdated Go modules' })
+vim.keymap.set('n', '<leader>dn', depramanager.npm_telescope, { desc = 'Outdated npm packages' })
+vim.keymap.set('n', '<leader>dvp', depramanager.python_vulnerabilities_telescope, { desc = 'Outdated Python packages' })
+vim.keymap.set('n', '<leader>dvg', depramanager.go_vulnerabilities_telescope, { desc = 'Outdated Go modules' })
+vim.keymap.set('n', '<leader>dvn', depramanager.npm_vulnerabilities_telescope, { desc = 'Outdated npm packages' })
 EOF
