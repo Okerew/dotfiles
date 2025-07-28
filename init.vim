@@ -106,10 +106,10 @@ noremap <leader>t :NvimTreeOpen<CR>
 noremap <leader>[ :tab new<CR>
 noremap <leader>] :bd<CR>
 noremap <leader>u :lua require('undotree').toggle()<CR>
-noremap <leader>tl :Telescope live_grep<CR>
+noremap <leader>l :Telescope live_grep<CR>
 noremap <leader>db :lua require("dbee").toggle()<CR>
 noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
-noremap <leader>l :SymbolsOutline<CR>
+noremap <leader>o :SymbolsOutline<CR>
 noremap <leader>p :LivePreview start<CR>
 
 " Command alias for Gitsigns
