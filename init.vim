@@ -697,7 +697,6 @@ local opts = {
 require("symbols-outline").setup(opts)
 EOF
 
-nnoremap <leader>cc :CopilotChat<CR>
 nnoremap <leader>cce :CopilotChatExplain<CR>
 nnoremap <leader>ccr :CopilotChatReview<CR>
 nnoremap <leader>ccf :CopilotChatFix<CR>
@@ -707,6 +706,7 @@ nnoremap <leader>cct :CopilotChatTests<CR>
 nnoremap <leader>ccq :CopilotChatClose<CR>
 vnoremap <leader>cc :CopilotChatVisual<CR>
 vnoremap <leader>cce :CopilotChatExplain<CR>
+command! -nargs=* Cc CopilotChat <args> 
 
 " Add this Lua configuration block after your other Lua configs
 lua << EOF
