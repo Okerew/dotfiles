@@ -4,13 +4,14 @@
 
 Requires: 
 
+MacOS
+
 clangd 
 
 zathura
 
 nvim 0.11
 
-qwen coder - ollama run qwen2.5-coder:7b
 
 ----- 
 
