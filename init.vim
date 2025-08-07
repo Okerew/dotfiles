@@ -3,7 +3,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'jiangmiao/auto-pairs'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
-Plug 'phaazon/hop.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -32,8 +31,6 @@ Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'rcarriga/nvim-notify'
-Plug 'MunifTanjim/nui.nvim'
-Plug 'kndndrj/nvim-dbee'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'github/copilot.vim'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
@@ -106,8 +103,6 @@ noremap <leader>[ :tab new<CR>
 noremap <leader>] :bd<CR>
 noremap <leader>u :lua require('undotree').toggle()<CR>
 noremap <leader>l :Telescope live_grep<CR>
-noremap <leader>db :lua require("dbee").toggle()<CR>
-noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
 noremap <leader>o :SymbolsOutline<CR>
 noremap <leader>p :LivePreview start<CR>
 
@@ -158,11 +153,6 @@ require('gitsigns').setup {
     col = 1
   },
 }
-EOF
-
-" Hop.nvim setup
-lua << EOF
-require('hop').setup()
 EOF
 
 " Lualine setup
@@ -513,111 +503,6 @@ vim.notify = function(msg, level, opts)
   end)
 end
 
-EOF
-
-noremap <leader>db :lua require("dbee").toggle()<CR>
-noremap <leader>dbc :lua require("dbee").store("query", "default", vim.api.nvim_buf_get_lines(0, 0, -1, false))<CR>
-noremap <leader>dba :lua _G.add_postgres_connection()<CR>
-
-lua << EOF
--- Simple function to add PostgreSQL connection
-function _G.add_postgres_connection()
-  local function get_input(prompt, default, secret)
-    if secret then
-      vim.fn.inputsave()
-      local result = vim.fn.inputsecret(prompt .. ": ")
-      vim.fn.inputrestore()
-      return result
-    else
-      local result = vim.fn.input(prompt .. (default and " [" .. default .. "]: " or ": "))
-      return result ~= "" and result or default
-    end
-  end
-
-  -- Get connection details
-  local name = get_input("Connection name", "postgres_local")
-  if name == "" then
-    vim.notify("Connection name is required", vim.log.levels.ERROR)
-    return
-  end
-
-  local host = get_input("Host", "localhost")
-  local port = get_input("Port", "5432")
-  local database = get_input("Database name")
-  if database == "" then
-    vim.notify("Database name is required", vim.log.levels.ERROR)
-    return
-  end
-
-  local username = get_input("Username")
-  if username == "" then
-    vim.notify("Username is required", vim.log.levels.ERROR)
-    return
-  end
-
-  local password = get_input("Password", nil, true)
-  if password == "" then
-    vim.notify("Password is required", vim.log.levels.ERROR)
-    return
-  end
-
-  -- Create connection URL
-  local connection_url = string.format("postgresql://%s:%s@%s:%s/%s", username, password, host, port, database)
-  
-  -- Set environment variable that dbee can read
-  vim.env.DBEE_CONNECTIONS = vim.json.encode({{
-    id = name,
-    name = name,
-    type = "postgres",
-    url = connection_url
-  }})
-  
-  vim.notify("Connection '" .. name .. "' created!", vim.log.levels.INFO)
-  vim.notify("Use <leader>db to open dbee", vim.log.levels.INFO)
-end
-
--- Very minimal dbee setup - let it use defaults
-local ok, dbee = pcall(require, "dbee")
-if ok then
-  -- Try the most basic setup possible
-  pcall(function()
-    dbee.setup({
-      sources = {},  -- Start with empty sources to avoid registration errors
-    })
-  end)
-else
-  vim.notify("DBee plugin not found. Run :PlugInstall", vim.log.levels.WARN)
-end
-
--- Simple commands
-vim.api.nvim_create_user_command('DBConnect', function()
-  local ok, dbee = pcall(require, "dbee")
-  if ok then
-    dbee.toggle()
-  else
-    vim.notify("DBee plugin not available", vim.log.levels.ERROR)
-  end
-end, { desc = "Toggle DBee interface" })
-
-vim.api.nvim_create_user_command('DBAddPostgres', function()
-  _G.add_postgres_connection()
-end, { desc = "Add PostgreSQL connection" })
-
--- Alternative manual connection method
-vim.api.nvim_create_user_command('DBConnectManual', function(opts)
-  if opts.args == "" then
-    local url = vim.fn.input("PostgreSQL URL (postgresql://user:pass@host:port/db): ")
-    if url ~= "" then
-      vim.env.DBEE_CONNECTIONS = vim.json.encode({{
-        id = "manual",
-        name = "manual",
-        type = "postgres", 
-        url = url
-      }})
-      vim.notify("Manual connection set. Use :DBConnect", vim.log.levels.INFO)
-    end
-  end
-end, { nargs = '*', desc = "Set manual connection" })
 EOF
 
 lua << EOF
