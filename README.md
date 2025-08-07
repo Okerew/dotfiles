@@ -6,6 +6,10 @@ Requires:
 
 MacOS
 
+Xcode 
+
+Metal api
+
 clangd 
 
 zathura
