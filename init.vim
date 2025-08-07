@@ -40,6 +40,7 @@ Plug 'saecki/crates.nvim', { 'tag': 'stable' }
 Plug 'hat0uma/csvview.nvim'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'Okerew/depramanager-nvim'
+Plug 'nvim-orgmode/org-bullets.nvim'
 
 call plug#end()
 
@@ -184,14 +185,6 @@ require('lualine').setup {
     lualine_x = {'location'},
   },
 }
-EOF
-
-" Orgmode setup
-lua << EOF
-require('orgmode').setup({
-  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
-  org_default_notes_file = '~/Dropbox/org/refile.org',
-})
 EOF
 
 " Dark Notify setup
@@ -441,12 +434,34 @@ undotree.setup({
 })
 EOF
 
+
 lua << EOF
 require('orgmode').setup({
   org_agenda_files = '~/orgfiles/**/*',
   org_default_notes_file = '~/orgfiles/refile.org',
 })
 EOF
+
+lua << EOF
+require("org-bullets").setup {
+  concealcursor = false,
+  symbols = {
+    list = "•",
+    headlines = {
+      { "◉", "MyBulletL1" },
+      { "○", "MyBulletL2" },
+      { "✸", "MyBulletL3" },
+      { "✿", "MyBulletL4" },
+    },
+    checkboxes = {
+      half = { "", "@org.checkbox.halfchecked" },
+      done = { "✓", "@org.keyword.done" },
+      todo = { "˟", "@org.keyword.todo" },
+    },
+  }
+}
+EOF
+
 
 lua << EOF
 -- nvim-notify setup
@@ -1074,4 +1089,4 @@ if cmp_status then
     }
   })
 end
-EOF
+E
