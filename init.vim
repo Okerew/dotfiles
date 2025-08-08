@@ -18,8 +18,7 @@ Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
 Plug 'tibabit/vim-templates'
 Plug 'nvim-orgmode/orgmode'
-Plug 'projekt0n/github-nvim-theme'
-Plug 'cormacrelf/dark-notify'
+Plug 'morhetz/gruvbox'
 Plug 'jbyuki/instant.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
@@ -41,6 +40,7 @@ Plug 'hat0uma/csvview.nvim'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'Okerew/depramanager-nvim'
 Plug 'nvim-orgmode/org-bullets.nvim'
+Plug 'cormacrelf/dark-notify'
 
 call plug#end()
 
@@ -48,7 +48,8 @@ call plug#end()
 let mapleader = " "             " Use space as leader (I prefer space, changed from comma for consistency)
 set clipboard=unnamedplus      " Use system clipboard
 set number                    " Show line numbers
-colorscheme github_light      " Default colorscheme
+colorscheme gruvbox      " Default colorscheme
+set fillchars=eob:\ 
 :setlocal spell
 :setlocal spelllang=en_us
 autocmd BufReadPost,BufNewFile * Copilot disable
@@ -185,24 +186,6 @@ require('lualine').setup {
     lualine_x = {'location'},
   },
 }
-EOF
-
-" Dark Notify setup
-lua << EOF
-local dn = require('dark_notify')
-
-dn.run({
-  schemes = {
-    dark = {
-      colorscheme = "github_dark",
-    },
-    light = {
-      colorscheme = "github_light",
-    }
-  }
-})
-
-dn.run()
 EOF
 
 " ALE settings
@@ -1089,4 +1072,34 @@ if cmp_status then
     }
   })
 end
-E
+EOF
+
+"" More configs
+lua << EOF
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+    pattern = "*.cu",
+    callback = function()
+        vim.bo.filetype = "cpp"
+    end
+})
+
+vim.g.gruvbox_contrast_light = "soft"
+EOF
+
+" Dark Notify setup
+lua << EOF
+local dn = require('dark_notify')
+
+dn.run({
+  schemes = {
+    dark = {
+      colorscheme = "gruvbox",
+    },
+    light = {
+      colorscheme = "gruvbox",
+    }
+  }
+})
+
+dn.run()
+EOF
