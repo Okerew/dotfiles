@@ -14,6 +14,8 @@ clangd
 
 zathura
 
+Distant cli
+
 nvim 0.11
 
 
