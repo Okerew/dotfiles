@@ -17,7 +17,7 @@ Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
 Plug 'tibabit/vim-templates'
 Plug 'nvim-orgmode/orgmode'
-Plug 'morhetz/gruvbox'
+Plug 'shaunsingh/nord.nvim'
 Plug 'jbyuki/instant.nvim'
 Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
@@ -47,7 +47,7 @@ call plug#end()
 let mapleader = " "             " Use space as leader (I prefer space, changed from comma for consistency)
 set clipboard=unnamedplus      " Use system clipboard
 set number                    " Show line numbers
-colorscheme gruvbox      " Default colorscheme
+colorscheme nord     " Default colorscheme
 set fillchars=eob:\ 
 :setlocal spell
 :setlocal spelllang=en_us
@@ -1061,10 +1061,10 @@ local dn = require('dark_notify')
 dn.run({
   schemes = {
     dark = {
-      colorscheme = "gruvbox",
+      colorscheme = "nord",
     },
     light = {
-      colorscheme = "gruvbox",
+      colorscheme = "nord",
     }
   }
 })
