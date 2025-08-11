@@ -5,7 +5,9 @@ curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --c
 
 curl -L https://sh.distant.dev | sh
 
-brew install lua
+brew tap homebrew-zathura/zathura
+brew install zathura
+
 brew install switchaudio-osx
 brew install nowplaying-cli
 
