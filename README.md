@@ -1,8 +1,9 @@
 # INSTALATION
-[Download vim plug](https://github.com/junegunn/vim-plug)
+<img width="1920" height="1080" alt="Screenshot 2025-08-11 at 21 20 40" src="https://github.com/user-attachments/assets/f4017b44-826d-44c4-bc77-a393b54372d9" />
+
 --------------------------------------------------------
 
-Requires: 
+## Requires: 
 
 MacOS
 
@@ -16,13 +17,11 @@ nvim 0.11
 
 ----- 
 
-Features:
+## Features:
+
+**Nvim :**
 
 Outline shows the structure of the file
-
-Database client - allows you to connect to databases
-
-Docker client - allows you to manage containers
 
 Lsp completion
 
@@ -32,13 +31,11 @@ Formatter, Linting support
 
 Tex support
 
-Hopping support
-
 Fzf support
 
 Remote ssh connection, live share feature like in vscode 
 
-Also github copilot though i only use it for the chat feauture as I started to have ai completions you can do the same with :Copilot disable the chat still should work.
+Collab
 
 See outdaded depedencies 
 
@@ -46,9 +43,22 @@ Live Preview
 
 And many more!
 
+**Sketchy Bar:**
+Nicely modern configured bar for my liking
+
+**Borders:**
+A nice shade of gray for the border small borders 6px
+
+**Spicetify:**
+A nice theme for spicetify
+
 ----
 
-You can download my neovim config by either copying the init.vim code to your own init.vim
-Or you can git clone if nvim folder is empty `git clone https://github.com/Okerew/OkerewConfig ~/.config/nvim`
+## Installation
 
-Then to finish installation run `PlugInstall`
+**Run:**
+```sh
+curl -L https://raw.githubusercontent.com/Okerew/dotfiles/refs/heads/main/install.sh | sh
+```
+
+Then to finish installation in nvim run `PlugInstall`
