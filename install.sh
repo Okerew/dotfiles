@@ -45,6 +45,17 @@ mv /tmp/dotfiles/sketchybar $HOME/.config/sketchybar
 mkdir -p ~/.nvim/config
 mv /tmp/dotfiles/nvim/* ~/.nvim/config/
 
+echo "Installing tmux"
+brew install tmux
+
+if [ -d /tmp/dotfiles/tmux ]; then
+    echo "Setting up tmux config"
+    mkdir -p $HOME/.config/tmux
+    mv /tmp/dotfiles/tmux/* $HOME/.tmux/
+else
+    echo "No tmux config found in dotfiles"
+fi
+
 rm -rf /tmp/dotfiles
 
 brew services start sketchybar
