@@ -44,6 +44,8 @@ brew install tmux
 mkdir -p $HOME/.config/tmux
 mv /tmp/dotfiles/tmux/* $HOME/.config/tmux/
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 rm -rf /tmp/dotfiles
 
 brew services start sketchybar
