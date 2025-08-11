@@ -16,6 +16,7 @@ zathura
 
 nvim 0.11
 
+distant cli
 
 ----- 
 
