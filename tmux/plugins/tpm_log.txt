@@ -1,0 +1,262 @@
+[2025-08-10 16:03:24.479]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:03:24.490]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:03:24.895]	Installing "tmux-sensible"
+[2025-08-10 16:03:24.906]	Already installed "tpm"
+[2025-08-10 16:03:25.604]	  "tmux-sensible" download success
+[2025-08-10 16:03:25.614]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:03:25.990]	Updating all plugins!
+[2025-08-10 16:03:26.003]	
+[2025-08-10 16:03:26.568]	  "tmux-sensible" update success
+[2025-08-10 16:03:26.577]	    | Już aktualne.
+[2025-08-10 16:03:28.555]	  "tpm" update success
+[2025-08-10 16:03:28.566]	    | Już aktualne.
+[2025-08-10 16:03:28.578]	    | Zarejestrowano podmoduł „lib/tmux-test” (https://github.com/tmux-plugins/tmux-test.git) w „lib/tmux-test”
+[2025-08-10 16:03:28.591]	    | Klonowanie do „/Users/witoldwarchol/.tmux/plugins/tpm/lib/tmux-test”...
+[2025-08-10 16:03:28.601]	    | Z https://github.com/tmux-plugins/tmux-test
+[2025-08-10 16:03:28.611]	    |  * branch            33fa65fbfb72ba6dd106c21bf5ee6cc353ecdbb6 -> FETCH_HEAD
+[2025-08-10 16:03:28.613]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:03:28.620]	    | Ścieżka podmodułu „lib/tmux-test”: wybrano „33fa65fbfb72ba6dd106c21bf5ee6cc353ecdbb6”
+[2025-08-10 16:03:28.624]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:03:28.631]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:03:28.775]	Already installed "tpm"
+[2025-08-10 16:03:28.786]	Already installed "tmux-sensible"
+[2025-08-10 16:03:28.797]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:03:29.088]	Updating all plugins!
+[2025-08-10 16:03:29.098]	
+[2025-08-10 16:03:29.152]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:03:29.163]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:03:29.283]	Done.
+
+[2025-08-10 16:03:29.451]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:03:29.548]	Updating all plugins!
+[2025-08-10 16:03:29.559]	
+[2025-08-10 16:03:29.794]	  "tpm" update success
+[2025-08-10 16:03:29.804]	    | Już aktualne.
+[2025-08-10 16:03:29.919]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:03:29.929]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:03:30.129]	Already installed "tmux-sensible"
+[2025-08-10 16:03:30.139]	Already installed "tpm"
+[2025-08-10 16:03:30.149]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:03:30.220]	Updating all plugins!
+[2025-08-10 16:03:30.231]	
+[2025-08-10 16:03:30.295]	  "tmux-sensible" update success
+[2025-08-10 16:03:30.296]	  "tmux-sensible" update success
+[2025-08-10 16:03:30.305]	    | Już aktualne.
+[2025-08-10 16:03:30.305]	    | Już aktualne.
+[2025-08-10 16:03:30.315]	  "tpm" update success
+[2025-08-10 16:03:30.315]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:03:30.325]	    | Już aktualne.
+[2025-08-10 16:03:30.335]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:03:30.428]	Done.
+
+[2025-08-10 16:03:30.447]	Done.
+
+[2025-08-10 16:03:30.716]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:03:30.726]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:03:30.949]	  "tpm" update success
+[2025-08-10 16:03:30.958]	  "tmux-sensible" update success
+[2025-08-10 16:03:30.967]	    | Już aktualne.
+[2025-08-10 16:03:30.976]	    | Już aktualne.
+[2025-08-10 16:03:30.987]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:03:31.018]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:03:31.034]	Removing "tmux-sensible"
+[2025-08-10 16:03:31.044]	  "tmux-sensible" clean success
+[2025-08-10 16:03:31.049]	Updating all plugins!
+[2025-08-10 16:03:31.060]	
+[2025-08-10 16:03:31.071]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:03:31.116]	Done.
+
+[2025-08-10 16:03:31.175]	Done.
+
+[2025-08-10 16:04:51.421]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:04:51.431]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:04:51.640]	Installing "tmux-sensible"
+[2025-08-10 16:04:51.650]	Installing "tmux"
+[2025-08-10 16:04:51.660]	Already installed "tpm"
+[2025-08-10 16:04:52.364]	  "tmux-sensible" download success
+[2025-08-10 16:04:52.413]	  "tmux" download success
+[2025-08-10 16:04:52.423]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:04:52.611]	Updating all plugins!
+[2025-08-10 16:04:52.623]	
+[2025-08-10 16:04:53.161]	  "tpm" update success
+[2025-08-10 16:04:53.172]	    | Już aktualne.
+[2025-08-10 16:04:53.195]	  "tmux-sensible" update success
+[2025-08-10 16:04:53.205]	    | Już aktualne.
+[2025-08-10 16:04:53.215]	  "tmux" update success
+[2025-08-10 16:04:53.225]	    | Już aktualne.
+[2025-08-10 16:04:53.235]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:04:53.352]	Done.
+
+[2025-08-10 16:04:54.822]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:04:54.832]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:04:55.052]	Already installed "tmux-sensible"
+[2025-08-10 16:04:55.062]	Already installed "tpm"
+[2025-08-10 16:04:55.071]	Already installed "tmux"
+[2025-08-10 16:04:55.081]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:04:55.235]	Updating all plugins!
+[2025-08-10 16:04:55.246]	
+[2025-08-10 16:04:55.471]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:04:55.481]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:04:55.680]	Already installed "tmux-sensible"
+[2025-08-10 16:04:55.689]	Already installed "tpm"
+[2025-08-10 16:04:55.698]	Already installed "tmux"
+[2025-08-10 16:04:55.708]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:04:55.768]	Updating all plugins!
+[2025-08-10 16:04:55.779]	
+[2025-08-10 16:04:55.835]	  "tpm" update success
+[2025-08-10 16:04:55.843]	    | Już aktualne.
+[2025-08-10 16:04:56.003]	  "tmux-sensible" update success
+[2025-08-10 16:04:56.013]	  "tmux" update success
+[2025-08-10 16:04:56.022]	    | Już aktualne.
+[2025-08-10 16:04:56.031]	    | Już aktualne.
+[2025-08-10 16:04:56.040]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:04:56.149]	Done.
+
+[2025-08-10 16:04:56.276]	  "tpm" update success
+[2025-08-10 16:04:56.286]	    | Już aktualne.
+[2025-08-10 16:04:56.316]	  "tmux" update success
+[2025-08-10 16:04:56.325]	    | Już aktualne.
+[2025-08-10 16:04:56.334]	  "tmux-sensible" update success
+[2025-08-10 16:04:56.343]	    | Już aktualne.
+[2025-08-10 16:04:56.352]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:04:56.399]	Removing "tmux-sensible"
+[2025-08-10 16:04:56.408]	  "tmux-sensible" clean success
+[2025-08-10 16:04:56.476]	Done.
+
+[2025-08-10 16:54:17.339]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:54:17.350]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:54:17.600]	Installing "tmux-sensible"
+[2025-08-10 16:54:17.610]	Already installed "tpm"
+[2025-08-10 16:54:17.620]	Already installed "tmux"
+[2025-08-10 16:54:18.366]	  "tmux-sensible" download success
+[2025-08-10 16:54:18.376]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:54:18.595]	Updating all plugins!
+[2025-08-10 16:54:18.608]	
+[2025-08-10 16:54:19.138]	  "tpm" update success
+[2025-08-10 16:54:19.148]	    | Już aktualne.
+[2025-08-10 16:54:19.163]	  "tmux-sensible" update success
+[2025-08-10 16:54:19.172]	    | Już aktualne.
+[2025-08-10 16:54:19.181]	  "tmux" update success
+[2025-08-10 16:54:19.190]	    | Już aktualne.
+[2025-08-10 16:54:19.200]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:54:19.318]	Done.
+
+[2025-08-10 16:56:11.424]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 16:56:11.451]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 16:56:11.774]	Already installed "tpm"
+[2025-08-10 16:56:11.804]	Already installed "tmux-sensible"
+[2025-08-10 16:56:11.831]	Already installed "tmux"
+[2025-08-10 16:56:11.860]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 16:56:12.790]	Updating all plugins!
+[2025-08-10 16:56:12.815]	
+[2025-08-10 16:56:13.570]	  "tpm" update success
+[2025-08-10 16:56:13.594]	    | Już aktualne.
+[2025-08-10 16:56:13.673]	  "tmux-sensible" update success
+[2025-08-10 16:56:13.698]	    | Już aktualne.
+[2025-08-10 16:56:13.733]	  "tmux" update success
+[2025-08-10 16:56:13.757]	    | Już aktualne.
+[2025-08-10 16:56:13.778]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 16:56:14.367]	Done.
+
+[2025-08-10 21:35:55.502]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 21:35:55.513]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 21:35:55.732]	Already installed "tpm"
+[2025-08-10 21:35:55.742]	Already installed "tmux-sensible"
+[2025-08-10 21:35:55.752]	Already installed "tmux"
+[2025-08-10 21:35:55.762]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 21:35:55.914]	Updating all plugins!
+[2025-08-10 21:35:55.926]	
+[2025-08-10 21:35:56.477]	  "tpm" update success
+[2025-08-10 21:35:56.487]	    | Już aktualne.
+[2025-08-10 21:35:56.496]	  "tmux-sensible" update success
+[2025-08-10 21:35:56.504]	  "tmux" update success
+[2025-08-10 21:35:56.513]	    | Już aktualne.
+[2025-08-10 21:35:56.522]	    | Już aktualne.
+[2025-08-10 21:35:56.531]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 21:35:56.650]	Done.
+
+[2025-08-10 21:50:57.696]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 21:50:57.707]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 21:50:57.924]	Already installed "tpm"
+[2025-08-10 21:50:57.934]	Already installed "tmux"
+[2025-08-10 21:50:57.943]	Already installed "tmux-sensible"
+[2025-08-10 21:50:57.953]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 21:50:58.108]	Updating all plugins!
+[2025-08-10 21:50:58.119]	
+[2025-08-10 21:50:58.659]	  "tpm" update success
+[2025-08-10 21:50:58.669]	    | Już aktualne.
+[2025-08-10 21:50:58.680]	  "tmux" update success
+[2025-08-10 21:50:58.689]	  "tmux-sensible" update success
+[2025-08-10 21:50:58.698]	    | Już aktualne.
+[2025-08-10 21:50:58.707]	    | Już aktualne.
+[2025-08-10 21:50:58.716]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 21:50:58.825]	Done.
+
+[2025-08-10 22:31:39.380]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-10 22:31:39.390]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-10 22:31:39.677]	Already installed "tpm"
+[2025-08-10 22:31:39.687]	Already installed "tmux"
+[2025-08-10 22:31:39.696]	Already installed "tmux-sensible"
+[2025-08-10 22:31:39.706]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-10 22:31:39.877]	Updating all plugins!
+[2025-08-10 22:31:39.890]	
+[2025-08-10 22:31:40.428]	  "tpm" update success
+[2025-08-10 22:31:40.438]	    | Już aktualne.
+[2025-08-10 22:31:40.482]	  "tmux" update success
+[2025-08-10 22:31:40.490]	    | Już aktualne.
+[2025-08-10 22:31:40.499]	  "tmux-sensible" update success
+[2025-08-10 22:31:40.508]	    | Już aktualne.
+[2025-08-10 22:31:40.517]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-10 22:31:40.633]	Done.
+
+[2025-08-11 08:47:46.793]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-11 08:47:46.803]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-11 08:47:47.053]	Already installed "tpm"
+[2025-08-11 08:47:47.062]	Already installed "tmux-sensible"
+[2025-08-11 08:47:47.072]	Already installed "tmux"
+[2025-08-11 08:47:47.081]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-11 08:47:47.249]	Updating all plugins!
+[2025-08-11 08:47:47.261]	
+[2025-08-11 08:47:47.827]	  "tpm" update success
+[2025-08-11 08:47:47.837]	    | Już aktualne.
+[2025-08-11 08:47:47.861]	  "tmux" update success
+[2025-08-11 08:47:47.871]	  "tmux-sensible" update success
+[2025-08-11 08:47:47.879]	    | Już aktualne.
+[2025-08-11 08:47:47.889]	    | Już aktualne.
+[2025-08-11 08:47:47.899]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-11 08:47:48.014]	Done.
+
+[2025-08-11 10:28:58.007]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-11 10:28:58.018]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-11 10:28:58.271]	Already installed "tpm"
+[2025-08-11 10:28:58.281]	Already installed "tmux"
+[2025-08-11 10:28:58.291]	Already installed "tmux-sensible"
+[2025-08-11 10:28:58.302]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-11 10:28:58.513]	Updating all plugins!
+[2025-08-11 10:28:58.525]	
+[2025-08-11 10:28:59.060]	  "tpm" update success
+[2025-08-11 10:28:59.070]	    | Już aktualne.
+[2025-08-11 10:28:59.141]	  "tmux-sensible" update success
+[2025-08-11 10:28:59.152]	    | Już aktualne.
+[2025-08-11 10:28:59.161]	  "tmux" update success
+[2025-08-11 10:28:59.170]	    | Już aktualne.
+[2025-08-11 10:28:59.180]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-11 10:28:59.315]	Done.
+
+[2025-08-11 20:11:30.276]	List of discovered tpm plugins: tmux-plugins/tpm tmux-plugins/tmux-sensible
+[2025-08-11 20:11:30.287]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/install_plugins
+[2025-08-11 20:11:30.553]	Already installed "tpm"
+[2025-08-11 20:11:30.563]	Already installed "tmux"
+[2025-08-11 20:11:30.573]	Already installed "tmux-sensible"
+[2025-08-11 20:11:30.584]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/update_plugins all
+[2025-08-11 20:11:30.794]	Updating all plugins!
+[2025-08-11 20:11:30.808]	
+[2025-08-11 20:11:31.383]	  "tpm" update success
+[2025-08-11 20:11:31.395]	    | Już aktualne.
+[2025-08-11 20:11:31.419]	  "tmux" update success
+[2025-08-11 20:11:31.429]	    | Już aktualne.
+[2025-08-11 20:11:31.439]	  "tmux-sensible" update success
+[2025-08-11 20:11:31.449]	    | Już aktualne.
+[2025-08-11 20:11:31.460]	Invoking /Users/witoldwarchol/.tmux/plugins//tpm/bin/clean_plugins all
+[2025-08-11 20:11:31.590]	Done.
+
