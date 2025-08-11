@@ -106,7 +106,6 @@ noremap <leader>p :LivePreview start<CR>
 
 " Command alias for Gitsigns
 command! -nargs=* Gits Gitsigns <args>
-command! -nargs=* Ha HopAnywhere <args> 
 
 let g:auto_pairs_map = {'(': ')', '[': ']', '{': '}', '"': '"', "'": "'"}
 
