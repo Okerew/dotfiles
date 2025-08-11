@@ -29,17 +29,10 @@ git clone https://github.com/Okerew/dotfiles /tmp/dotfiles
 mv $HOME/.config/sketchybar $HOME/.config/sketchybar_backup
 
 BORDERS_PATH="$(brew --prefix borders)/share/borders"
-if [ -d "$BORDERS_PATH" ]; then
-    mkdir -p $HOME/.config/borders
-    cp -r "$BORDERS_PATH"/* $HOME/.config/borders/
-else
-    echo "Warning: Borders directory not found at $BORDERS_PATH"
-fi
+mkdir -p $HOME/.config/borders
+cp -r "$BORDERS_PATH"/* $HOME/.config/borders/
 
-if [ -d /tmp/dotfiles/borders ]; then
-    mv /tmp/dotfiles/borders $HOME/.config/borders
-fi
-
+mv /tmp/dotfiles/borders $HOME/.config/borders
 mv /tmp/dotfiles/sketchybar $HOME/.config/sketchybar
 
 mkdir -p ~/.nvim/config
@@ -48,16 +41,10 @@ mv /tmp/dotfiles/nvim/* ~/.nvim/config/
 echo "Installing tmux"
 brew install tmux
 
-if [ -d /tmp/dotfiles/tmux ]; then
-    echo "Setting up tmux config"
-    mkdir -p $HOME/.config/tmux
-    mv /tmp/dotfiles/tmux/* $HOME/.tmux/
-else
-    echo "No tmux config found in dotfiles"
-fi
+mkdir -p $HOME/.config/tmux
+mv /tmp/dotfiles/tmux/* $HOME/.config/tmux/
 
 rm -rf /tmp/dotfiles
 
 brew services start sketchybar
-
 brew services start borders
