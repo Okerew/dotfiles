@@ -3,7 +3,7 @@ echo "Installing Dependencies"
 curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-git clone https://github.com/Okerew/OkerewConfig ~/.config/nvim
+curl -L https://sh.distant.dev | sh
 
 brew install lua
 brew install switchaudio-osx
