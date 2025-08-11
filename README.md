@@ -1,4 +1,4 @@
-# INSTALATION
+# Installation
 <img width="1920" height="1080" alt="Screenshot 2025-08-11 at 21 20 40" src="https://github.com/user-attachments/assets/f4017b44-826d-44c4-bc77-a393b54372d9" />
 
 --------------------------------------------------------
