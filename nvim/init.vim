@@ -31,7 +31,6 @@ Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'jcha0713/cmp-tw2css'
-Plug 'David-Kunz/cmp-npm'
 Plug 'saecki/crates.nvim', { 'tag': 'stable' }
 Plug 'hat0uma/csvview.nvim'
 Plug 'brianhuster/live-preview.nvim'
@@ -246,7 +245,6 @@ vim.defer_fn(ensure_installed, 100)
 EOF
 
 lua require('crates').setup()
-lua require('cmp-npm').setup({})
 
 lua <<EOF
 local cmp = require("cmp")
@@ -288,7 +286,6 @@ cmp.setup({
     { name = "path", priority = 600 },  
     { name = "buffer", priority = 400, keyword_length = 3 },
     { name = "cmp-tw2css" },
-    { name = "npm" },
   }),
 
   -- Performance settings
