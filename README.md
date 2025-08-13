@@ -1,5 +1,9 @@
-# Installation
+# Dotfiles
+## Dark theme:
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/482ff322-c53f-4a57-a27f-8d289e3b7cdb" />
+
+## Light theme:
+<img width="1920" height="1080" alt="Screenshot 2025-08-13 at 14 54 04" src="https://github.com/user-attachments/assets/96f4674c-e0c4-47b4-baf5-83cd97783bad" />
 
 --------------------------------------------------------
 
