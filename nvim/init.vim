@@ -2,7 +2,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'tpope/vim-fugitive'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -17,8 +16,6 @@ Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
 Plug 'tibabit/vim-templates'
 Plug 'shaunsingh/nord.nvim'
-Plug 'jbyuki/instant.nvim'
-Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.3' }
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
 Plug 'nvim-tree/nvim-tree.lua'
@@ -31,7 +28,6 @@ Plug 'rcarriga/nvim-notify'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'jcha0713/cmp-tw2css'
 Plug 'saecki/crates.nvim', { 'tag': 'stable' }
-Plug 'hat0uma/csvview.nvim'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'Okerew/depramanager-nvim'
 Plug 'cormacrelf/dark-notify'
@@ -161,10 +157,6 @@ let g:ale_linters = {
 \   'rust': ['clippy'],
 \}
 
-
-lua << EOF
-require("distant"):setup()
-EOF
 
 " === MASON SETUP ===
 lua << EOF
@@ -499,8 +491,6 @@ local opts = {
 }
 require("symbols-outline").setup(opts)
 EOF
-
-lua require('csvview').setup()
 
 " Depramanager setup
 
