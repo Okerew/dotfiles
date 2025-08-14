@@ -610,31 +610,6 @@ lspconfig.metal_lsp.setup({
   )
 })
 
--- Setup nvim-cmp for autocompletion
-local cmp_status, cmp = pcall(require, 'cmp')
-if cmp_status then
-  cmp.setup({
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp', priority = 1000 },
-      { name = 'buffer', priority = 500 },
-      { name = 'path', priority = 250 }
-    }),
-    formatting = {
-      format = function(entry, vim_item)
-        vim_item.menu = ({
-          nvim_lsp = "[LSP]",
-          buffer = "[Buffer]",
-          path = "[Path]"
-        })[entry.source.name]
-        return vim_item
-      end
-    },
-    experimental = {
-      ghost_text = true,
-    }
-  })
-end
-
 -- Metal file type detection and configuration
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   pattern = {"*.metal"},
@@ -699,6 +674,9 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+EOF
+
+lua << EOF
 -- Diagnostic configuration
 vim.diagnostic.config({
   virtual_text = {
@@ -721,15 +699,6 @@ for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
-
--- Auto-format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.metal",
-  callback = function()
-      vim.lsp.buf.format({ async = false })
-  end,
-})
-
 EOF
 
 lua << EOF
@@ -793,7 +762,6 @@ lspconfig.gml_lsp.setup({
               delta = false
             }
           },
-          -- These types and modifiers match what your Go server provides.
           tokenTypes = {
             'namespace', 'type', 'class', 'enum', 'interface', 'struct',
             'typeParameter', 'parameter', 'variable', 'property', 'enumMember',
@@ -846,20 +814,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Setup nvim-cmp for autocompletion
-local cmp_status, cmp = pcall(require, 'cmp')
-if cmp_status then
-  cmp.setup({
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp', priority = 1000 },
-      { name = 'buffer', priority = 500 },
-      { name = 'path', priority = 250 }
-    }),
-    experimental = {
-      ghost_text = true,
-    }
-  })
-end
 EOF
 
 "" More configs
@@ -870,8 +824,6 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
         vim.bo.filetype = "cpp"
     end
 })
-
-vim.g.gruvbox_contrast_light = "soft"
 EOF
 
 " Dark Notify setup
