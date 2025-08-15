@@ -7,6 +7,8 @@ curl -L https://sh.distant.dev | sh
 
 brew tap homebrew-zathura/zathura
 brew install zathura
+brew install cargo-outdated
+brew install cargo-audit
 
 brew install switchaudio-osx
 brew install nowplaying-cli
