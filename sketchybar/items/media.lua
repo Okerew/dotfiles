@@ -45,7 +45,7 @@ local media_title = sbar.add("item", {
 	icon = { drawing = false },
 	label = {
 		string = "Testing AppleScript",
-		font = { size = 11, family = "SF Pro" },
+		font = { size = 11, family = "Jetbrains Mono" },
 		width = 0,
 		max_chars = 20,
 		y_offset = -5,
