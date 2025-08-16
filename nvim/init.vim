@@ -75,14 +75,16 @@ nnoremap <leader>j :lprev<CR>zz
 nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 " Delete without yank (blackhole)
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
+nnoremap d "_d
+nnoremap x "_x
+vnoremap d "_d
+vnoremap x "_x
 
 " Surround text with '=' (for example)
 nnoremap =ap ma=ap'a
 
 " Paste over visual selection without yanking replaced text
-xnoremap <leader>p "_dP
+vnoremap p "_dP
 
 " Shortcuts
 noremap <leader>f :Telescope find_files<CR>
