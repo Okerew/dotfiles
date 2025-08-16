@@ -361,23 +361,22 @@ EOF
 lua << EOF
 -- nvim-notify setup
 require("notify").setup({
-  -- Animation style (see below for options)
+  -- Animation style
   stages = "fade_in_slide_out",
   
-  -- Function called when a new window is opened, use for changing win settings/config
+  -- Function called when a new window is opened
   on_open = nil,
   
   -- Function called when a window is closed
   on_close = nil,
   
-  -- Render function for notifications. See notify-render()
+  -- Render function for notifications
   render = "default",
   
   -- Default timeout for notifications
-  timeout = 500,
+  timeout = 3000,  -- Increased from 500ms to 3 seconds for better visibility
   
-  -- For stages that change opacity this is treated as the highlight behind the window
-  -- Set this to either a highlight group, an RGB hex value e.g. "#000000" or a function returning an RGB code for dynamic values
+  -- Background colour
   background_colour = "Normal",
   
   -- Minimum width for notification windows
@@ -393,26 +392,28 @@ require("notify").setup({
   },
 })
 
--- Set nvim-notify as the default notification handler
-vim.notify = require("notify")
+-- Store the original notify function
+local notify = require("notify")
 
+-- List of message prefixes to block
 local blocked_prefixes = {
   "config.mappings.show_system_prompt",
   "config.mappings.show_user_selection",
   "'canary' branch is deprecated",
 }
 
+-- Custom notify function that filters unwanted messages
 vim.notify = function(msg, level, opts)
+  -- Check if message should be blocked
   for _, prefix in ipairs(blocked_prefixes) do
-    if msg:sub(1, #prefix) == prefix then
+    if type(msg) == "string" and msg:sub(1, #prefix) == prefix then
       return
     end
   end
-  vim.schedule(function()
-    vim.api.nvim_echo({{msg}}, true, {})
-  end)
+  
+  -- Use nvim-notify for non-blocked messages
+  notify(msg, level, opts)
 end
-
 EOF
 
 " Depramanager setup
