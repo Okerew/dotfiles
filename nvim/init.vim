@@ -76,9 +76,7 @@ nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 " Delete without yank (blackhole)
 nnoremap d "_d
-nnoremap x "_x
 vnoremap d "_d
-vnoremap x "_x
 
 " Surround text with '=' (for example)
 nnoremap =ap ma=ap'a
