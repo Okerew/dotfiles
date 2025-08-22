@@ -28,6 +28,8 @@ Plug 'jcha0713/cmp-tw2css'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'cormacrelf/dark-notify'
 Plug 'Okerew/depramanager-nvim'
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
 
 call plug#end()
 
