@@ -28,8 +28,6 @@ Plug 'jcha0713/cmp-tw2css'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'cormacrelf/dark-notify'
 Plug 'Okerew/depramanager-nvim'
-Plug 'godlygeek/tabular'
-Plug 'preservim/vim-markdown'
 
 call plug#end()
 
@@ -788,3 +786,4 @@ set undodir=~/.local/share/nvim/undo
 " Optional: Set undo levels (default is usually fine)
 set undolevels=1000         " How many undos to remember
 set undoreload=10000        " Number of lines to save for undo on buffer reload
+let g:markdown_fenced_languages = ['html', 'python', 'lua', 'vim', 'typescript', 'javascript']
