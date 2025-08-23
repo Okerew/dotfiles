@@ -12,7 +12,6 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'nvim-tree/nvim-web-devicons'
-Plug 'romgrk/barbar.nvim'
 Plug 'dense-analysis/ale'
 Plug 'tibabit/vim-templates'
 Plug 'shaunsingh/nord.nvim'
@@ -28,6 +27,7 @@ Plug 'jcha0713/cmp-tw2css'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'cormacrelf/dark-notify'
 Plug 'Okerew/depramanager-nvim'
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 
 call plug#end()
 
@@ -86,8 +86,8 @@ vnoremap p "_dP
 
 " Shortcuts
 noremap <leader>f :Telescope find_files<CR>
-noremap <leader>, :tab new<CR>
-noremap <leader>. :bd<CR>
+noremap <leader>, :enew<CR>
+lua vim.api.nvim_set_keymap('n', '<leader>.', ':bprevious<CR>:bd! #<CR>', { noremap = true, silent = true })
 noremap <leader>u :lua require('undotree').toggle()<CR>
 noremap <leader>l :Telescope live_grep<CR>
 noremap <leader>o :Telescope lsp_document_symbols<CR>
@@ -770,6 +770,44 @@ dn.run({
 })
 
 dn.run()
+EOF
+
+lua << EOF
+local harpoon = require("harpoon")
+
+harpoon:setup()
+
+local conf = require("telescope.config").values
+local function toggle_telescope(harpoon_files)
+    local file_paths = {}
+    for _, item in ipairs(harpoon_files.items) do
+        table.insert(file_paths, item.value)
+    end
+
+    require("telescope.pickers").new({}, {
+        prompt_title = "Harpoon",
+        finder = require("telescope.finders").new_table({
+            results = file_paths,
+        }),
+        previewer = conf.file_previewer({}),
+        sorter = conf.generic_sorter({}),
+    }):find()
+end
+
+vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
+    { desc = "Open harpoon window" })
+ 
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 EOF
 
 set laststatus=0
