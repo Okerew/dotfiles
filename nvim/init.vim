@@ -810,3 +810,47 @@ set undodir=~/.local/share/nvim/undo
 set undolevels=1000         " How many undos to remember
 set undoreload=10000        " Number of lines to save for undo on buffer reload
 let g:markdown_fenced_languages = ['html', 'python', 'lua', 'vim', 'typescript', 'javascript']
+
+lua << EOF
+-- Store original tmux window name
+local original_tmux_name = vim.fn.systemlist("tmux display-message -p '#W'")[1]
+
+-- Update tmux window name
+local function update_tmux_name()
+  local filename = vim.fn.expand("%:t")
+  if filename == "" then
+    filename = "[No Name]"
+  end
+
+  local modified = vim.bo.modified
+  local readonly = vim.bo.readonly
+
+  local status = ""
+  if modified then
+    status = " [+]"  -- unsaved changes
+  elseif readonly then
+    status = " [RO]" -- readonly
+  end
+
+  -- Escape single quotes to avoid tmux errors
+  filename = filename:gsub("'", "'\\''")
+
+  vim.fn.system("tmux rename-window '" .. filename .. status .. "'")
+end
+
+-- Restore original tmux window name
+local function restore_tmux_name()
+  vim.fn.system("tmux rename-window '" .. original_tmux_name .. "'")
+end
+
+-- Autocommands
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter", "BufWritePost", "TextChanged", "TextChangedI"}, {
+  pattern = "*",
+  callback = update_tmux_name
+})
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = restore_tmux_name
+})
+
+EOF
