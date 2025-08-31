@@ -5,7 +5,6 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -30,6 +29,7 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'folke/which-key.nvim'
 Plug 'Okerew/od.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
 
 call plug#end()
 
@@ -50,7 +50,6 @@ nnoremap Q <nop>
 
 " Join lines without moving cursor
 nnoremap J mzJ`z
-
 " Scroll and center cursor
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
@@ -190,7 +189,6 @@ require("mason-lspconfig").setup({
         "rust_analyzer",
         "ts_ls",
         "bashls",
-        "cssls",
         "jsonls",
         "html",
         "lua_ls",
@@ -264,19 +262,8 @@ cmp.setup({
   completion = {
     completeopt = "menu,menuone,noinsert,noselect",
   },
-  preselect = cmp.PreselectMode.None,
 
-  -- Add window configuration for consistent appearance
-  window = {
-    completion = cmp.config.window.bordered({
-      border = 'rounded',
-      winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
-    }),
-    documentation = cmp.config.window.bordered({
-      border = 'rounded',
-      winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
-    }),
-  },
+  preselect = cmp.PreselectMode.None,
 
   formatting = {
     format = function(entry, vim_item)
@@ -291,6 +278,10 @@ cmp.setup({
       
       return vim_item
     end
+  },
+
+  window = {
+      completion = { scrollbar = false,},
   },
 
   mapping = cmp.mapping.preset.insert({
@@ -310,7 +301,6 @@ cmp.setup({
       s = cmp.mapping.confirm({ select = false }),
     }),
     
-    -- Better Tab mapping - navigates completions when visible, otherwise normal tab
     ["<Tab>"] = cmp.mapping(function(fallback)
       local luasnip = require("luasnip")
       if cmp.visible() then
@@ -564,54 +554,17 @@ end
 -- Setup the Metal LSP
 lspconfig.metal_lsp.setup({
   on_attach = function(client, bufnr)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    
-    -- Enable semantic tokens if supported
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens.start(bufnr, client.id)
     end
     
     -- Mappings
     local opts = { noremap=true, silent=true, buffer=bufnr }
-    
-    -- Navigation
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   end,
   
   flags = {
     debounce_text_changes = 150,
   },
-  
-  capabilities = vim.tbl_deep_extend('force', 
-    require('cmp_nvim_lsp').default_capabilities(),
-    {
-      textDocument = {
-        semanticTokens = {
-          requests = {
-            range = false,
-            full = {
-              delta = false
-            }
-          },
-          tokenTypes = {
-            'namespace', 'type', 'class', 'enum', 'interface', 'struct',
-            'typeParameter', 'parameter', 'variable', 'property', 'enumMember',
-            'event', 'function', 'method', 'macro', 'keyword', 'modifier',
-            'comment', 'string', 'number', 'regexp', 'operator'
-          },
-          tokenModifiers = {
-            'declaration', 'definition', 'readonly', 'static', 'deprecated',
-            'abstract', 'async', 'modification', 'documentation', 'defaultLibrary'
-          }
-        }
-      }
-    }
-  )
 })
 
 -- Metal file type detection and configuration
@@ -730,10 +683,6 @@ end
 
 lspconfig.gml_lsp.setup({
   on_attach = function(client, bufnr)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    
-    -- Enable semantic tokens, which your server provides
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens.start(bufnr, client.id)
     end
@@ -749,33 +698,6 @@ lspconfig.gml_lsp.setup({
   flags = {
     debounce_text_changes = 150,
   },
-  
-  -- Client capabilities, especially for semantic tokens
-  capabilities = vim.tbl_deep_extend('force',  
-    require('cmp_nvim_lsp').default_capabilities(),
-    {
-      textDocument = {
-        semanticTokens = {
-          requests = {
-            range = false,
-            full = {
-              delta = false
-            }
-          },
-          tokenTypes = {
-            'namespace', 'type', 'class', 'enum', 'interface', 'struct',
-            'typeParameter', 'parameter', 'variable', 'property', 'enumMember',
-            'event', 'function', 'method', 'macro', 'keyword', 'modifier',
-            'comment', 'string', 'number', 'regexp', 'operator'
-          },
-          tokenModifiers = {
-            'declaration', 'definition', 'readonly', 'static', 'deprecated',
-            'abstract', 'async', 'modification', 'documentation', 'defaultLibrary'
-          }
-        }
-      }
-    }
-  )
 })
 
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
@@ -783,30 +705,6 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   callback = function()
     vim.bo.filetype = "gml"
     vim.bo.commentstring = "// %s"
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "gml",
-  callback = function(args)
-    -- Define GML-specific highlight groups that work with your LSP's semantic tokens
-    local highlights = {
-      ["@lsp.type.keyword"] = { link = "Keyword" },
-      ["@lsp.type.function"] = { link = "Function" },
-      ["@lsp.type.method"] = { link = "Function" },
-      ["@lsp.type.variable"] = { link = "Identifier" },
-      ["@lsp.type.property"] = { fg = "#d08770" },
-      ["@lsp.type.parameter"] = { link = "Identifier" },
-      ["@lsp.type.string"] = { link = "String" },
-      ["@lsp.type.number"] = { link = "Number" },
-      ["@lsp.type.comment"] = { link = "Comment" },
-      ["@lsp.type.operator"] = { link = "Operator" },
-      ["@lsp.type.macro"] = { link = "Macro" },
-    }
-    
-    for group, opts in pairs(highlights) do
-      vim.api.nvim_set_hl(0, group, opts)
-    end
   end,
 })
 
