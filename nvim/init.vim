@@ -364,7 +364,7 @@ cmp.setup({
     debounce = 30,        
     throttle = 15,        
     fetching_timeout = 60,
-    confirm_resolve_timeout = 80,
+    confirm_resolve_timeout = 40,
     async_budget = 1,
     max_view_entries = 50, 
   },
