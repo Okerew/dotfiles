@@ -39,15 +39,15 @@ local media_artist = sbar.add("item", {
 
 local media_title = sbar.add("item", {
 	position = "right",
-	drawing = false, -- Start hidden
-	padding_left = 0,
-	padding_right = 8,
+	drawing = false,
+	padding_left = 10,
+	padding_right = 10,
 	icon = { drawing = false },
 	label = {
 		string = "Testing AppleScript",
 		font = { size = 11, family = "Jetbrains Mono" },
 		width = 0,
-		max_chars = 20,
+		max_chars = 30,
 		y_offset = -5,
 	},
 })
