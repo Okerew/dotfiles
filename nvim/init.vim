@@ -647,7 +647,7 @@ vim.diagnostic.config({
 })
 
 -- Define diagnostic signs
-local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+local signs = { Error = "􀁠 ", Warn = "􀇾 ", Hint = "󰌶 ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -814,15 +814,24 @@ vim.fn.sign_define("ODTelescopeItem", {
 		text = "▶",
 		texthl = "DiagnosticSignWarn",
 		numhl = "DiagnosticSignWarn",})
+vim.fn.sign_define("ODSuspiciousValue", {
+	text = "⁉",
+	texthl = "DiagnosticSignWarn",
+	culhl = "DiagnosticSignWarn",
+})
+
 local od = require('od')
 od:setup()
+
+vim.g.rust_build_time_threshold = 60.0
 
 -- General OD mappings
 vim.keymap.set("n", "<leader>odr", function() od:debug() end, { desc = "Run debugger" })
 vim.keymap.set("n", "<leader>ode", function() od:show_errors() end, { desc = "Show errors" })
 vim.keymap.set("n", "<leader>odw", function() od:show_warnings() end, { desc = "Show warnings" })
 vim.keymap.set("n", "<leader>odo", function() od:show_output() end, { desc = "Show output" })
-vim.keymap.set("n", "<leader>oci", function() od:clear_telescope_items() end, { desc = "Clear Telescope Items" })
+vim.keymap.set("n", "<leader>oci", function() od:clear_telescope_items() end, { desc = "Clear Items" })
+vim.keymap.set("n", "<leader>os", function() od:show_suspicious_variables() end, { desc = "Shows suspicious variables" })
 
 -- Rust-specific
 vim.keymap.set("n", "<leader>orc", function() od:rust_clippy() end, { desc = "Run Rust Clippy" })
@@ -845,11 +854,13 @@ vim.keymap.set("n", "<leader>ogr", function() od:gdb_remote() end, { desc = "GDB
 vim.keymap.set("n", "<leader>oab", function() od:copy_breakpoint() end, { desc = "Add breakpoint" })
 vim.keymap.set("n", "<leader>orb", function() od:copy_clear_breakpoint() end, { desc = "Remove breakpoint" })
 vim.keymap.set("n", "<leader>oca", function() od:clear_breakpoints() end, { desc = "Clears breakpoints, watchpoints, tracepoints" })
-vim.keymap.set("n", "<leader>ol", function() od:show_breakpoints_picker() end, { desc = "List brakpoints, watchpoints, tracepoints" })
+vim.keymap.set("n", "<leader>ols", function() od:show_breakpoints_picker() end, { desc = "List brakpoints, watchpoints, tracepoints" })
 vim.keymap.set("n", "<leader>oaw", function() od:copy_watchpoint() end, { desc = "Add watchpoint" })
 vim.keymap.set("n", "<leader>orw", function() od:copy_clear_watchpoint() end, { desc = "Remove watchpoint" })
 vim.keymap.set("n", "<leader>oat", function() od:copy_tracepoint() end, { desc = "Add tracepoint" })
 vim.keymap.set("n", "<leader>ort", function() od:copy_clear_tracepoint() end, { desc = "Remove tracepoint" })
+vim.keymap.set("n", "<leader>olp", function() od:load_breakpoints() end, { desc = "Load points" })
+vim.keymap.set("n", "<leader>osp", function() od:save_breakpoints() end, { desc = "Saves points" })
 
 -- Test integration for python, javascript/typepescript, lua
 vim.keymap.set("n", "<leader>otp", function() od:python_test() end, { desc = "Run Python Test" })
