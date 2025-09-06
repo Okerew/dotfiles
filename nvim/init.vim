@@ -10,16 +10,14 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'dense-analysis/ale'
 Plug 'shaunsingh/nord.nvim'
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
-Plug 'jiaoshijie/undotree'
+Plug 'debugloop/telescope-undo.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'rcarriga/nvim-notify'
-Plug 'jcha0713/cmp-tw2css'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'Okerew/depramanager-nvim'
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
@@ -85,8 +83,7 @@ lua << EOF
 vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find Files" })
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>", { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>l", ":Telescope live_grep<CR>", { desc = "Live Grep" })
-vim.keymap.set("n", "<leader>o", ":Telescope lsp_document_symbols<CR>", { desc = "Document Symbols" })
-vim.keymap.set("n", "<leader>u", ":lua require('undotree').toggle()<CR>", { desc = "Toggle Undotree" })
+vim.keymap.set("n", "<leader>o", ":InspectTree<CR>", { desc = "Treesitter Symbols" })
 vim.keymap.set("n", "<leader>a", ":lua require('harpoon'):list():add()<CR>", { desc = "Add to Harpoon" })
 
 -- Buffer operations
@@ -155,19 +152,6 @@ require('gitsigns').setup {
 }
 EOF
 
-" ALE settings
-let g:ale_completion_enabled = 0
-
-let g:ale_linters = {
-\   'python': ['flake8'],
-\   'javascript': ['eslint'],
-\   'c': ['clangtidy'],
-\   'cpp': ['clangtidy'],
-\   'go': ['golangci-lint'],
-\   'rust': ['clippy'],
-\}
-
-
 " === MASON SETUP ===
 lua << EOF
 -- Mason setup - must be called before lspconfig
@@ -188,6 +172,7 @@ require("mason-lspconfig").setup({
         "clangd", 
         "rust_analyzer",
         "ts_ls",
+        "cssls",
         "bashls",
         "jsonls",
         "html",
@@ -347,7 +332,6 @@ cmp.setup({
     { name = "nvim_lsp_signature_help", priority = 800 },
     { name = "path", priority = 600 },  
     { name = "buffer", priority = 400, keyword_length = 3 },
-    { name = "cmp-tw2css", priority = 300 },
   }),
 
   performance = {
@@ -413,30 +397,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 EOF
 
 let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
-
-lua << EOF
-local undotree = require('undotree')
-
-undotree.setup({
-  float_diff = true,  -- using float window previews diff, set this `true` will disable layout option
-  layout = "left_bottom", -- "left_bottom", "left_left_bottom"
-  position = "left", -- "right", "bottom"
-  ignore_filetype = { 'undotree', 'undotreeDiff', 'qf', 'TelescopePrompt', 'spectre_panel', 'tsplayground' },
-  window = {
-    winblend = 30,
-  },
-  keymaps = {
-    ['j'] = "move_next",
-    ['k'] = "move_prev",
-    ['gj'] = "move2parent",
-    ['J'] = "move_change_next",
-    ['K'] = "move_change_prev",
-    ['<cr>'] = "action_enter",
-    ['p'] = "enter_diffbuf",
-    ['q'] = "quit",
-  },
-})
-EOF
 
 lua << EOF
 -- nvim-notify setup
@@ -760,9 +720,8 @@ endif
 set undodir=~/.local/share/nvim/undo
 
 " Optional: Set undo levels (default is usually fine)
-set undolevels=1000         " How many undos to remember
+set undolevels=100         " How many undos to remember
 set undoreload=10000        " Number of lines to save for undo on buffer reload
-let g:markdown_fenced_languages = ['html', 'python', 'lua', 'vim', 'typescript', 'javascript']
 
 lua << EOF
 -- Store original tmux window name
@@ -1068,3 +1027,67 @@ wk.add({
 
 _G.setup_lsp_which_key = setup_lsp_which_key
 EOF
+
+lua << EOF
+require("telescope").load_extension("undo")
+vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+EOF
+
+lua << EOF
+local devicons = require("nvim-web-devicons")
+local ns = vim.api.nvim_create_namespace("netrw_devicons")
+
+local function decorate_netrw()
+  if vim.bo.filetype ~= "netrw" then return end
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+  local cwd = vim.fn.getcwd()
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  
+  for i, line in ipairs(lines) do
+    if line:match("%S") and not line:match("^netrw") then
+      local fname = line:match("%S+$")
+      if fname then
+        local fullpath = cwd .. "/" .. fname
+        if vim.fn.isdirectory(fullpath) == 1 then
+          -- Folder: do nothing, no virtual text
+        else
+          local ext = vim.fn.fnamemodify(fname, ":e")
+          if ext ~= "" then
+            local icon, hl = devicons.get_icon(fname, ext, { default = true })
+            if icon then
+              vim.api.nvim_buf_set_extmark(bufnr, ns, i - 1, 0, {
+                virt_text = { { icon .. " ", hl } },
+                virt_text_pos = "inline", 
+              })
+            end
+          end
+          -- Files without extension: do nothing
+        end
+      end
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "netrw",
+  callback = function()
+    vim.defer_fn(decorate_netrw, 50)
+    vim.api.nvim_create_autocmd({ "BufWinEnter", "TextChanged", "BufReadPost" }, {
+      buffer = vim.api.nvim_get_current_buf(),
+      callback = function() vim.defer_fn(decorate_netrw, 50) end,
+    })
+  end,
+})
+EOF
+
+lua require'nvim-treesitter.configs'.setup{highlight={enable=true}} 
+
+function FoldConfig()
+	set foldmethod=expr
+	set foldexpr=nvim_treesitter#foldexpr()
+    set foldlevel=99
+    set foldlevelstart=99
+endfunction
+
+autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
