@@ -13,7 +13,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'shaunsingh/nord.nvim'
 Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
-Plug 'debugloop/telescope-undo.nvim'
+Plug 'simnalamburt/vimmundo'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
@@ -24,10 +24,10 @@ Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 Plug 'rafamadriz/friendly-snippets'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'} 
 Plug 'saadparwaiz1/cmp_luasnip' 
-Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'folke/which-key.nvim'
 Plug 'Okerew/od.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'norcalli/nvim-colorizer.lua'
 
 call plug#end()
 
@@ -84,6 +84,7 @@ vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find Fil
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>", { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>l", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>o", ":InspectTree<CR>", { desc = "Treesitter Symbols" })
+vim.keymap.set("n", "<leader>u", ":MundoToggle<CR>", { desc = "Treesitter Symbols" })
 vim.keymap.set("n", "<leader>a", ":lua require('harpoon'):list():add()<CR>", { desc = "Add to Harpoon" })
 
 -- Buffer operations
@@ -688,7 +689,19 @@ vim.keymap.set("n", "gd", ":lua vim.lsp.buf.definition()<CR>", { desc = "Go to D
 vim.keymap.set("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", { desc = "Go to Implementation" })
 vim.keymap.set("n", "gr", ":lua vim.lsp.buf.references()<CR>", { desc = "Go to References" })
 vim.keymap.set("n", "K", ":lua vim.lsp.buf.hover()<CR>", { desc = "Hover Documentation" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename" })
+vim.keymap.set("n", "<leader>lrn", vim.lsp.buf.rename, { desc = "LSP Rename" })
+vim.keymap.set('n', '<leader>lca', vim.lsp.buf.code_action, { desc = "LSP Code Action" })
+vim.keymap.set('v', '<leader>lca', function()
+    local start_pos = vim.api.nvim_buf_get_mark(0, "<")
+    local end_pos   = vim.api.nvim_buf_get_mark(0, ">")
+    vim.lsp.buf.code_action({
+        range = {
+            start = { start_pos[1] - 1, start_pos[2] },
+            ["end"] = { end_pos[1] - 1, end_pos[2] },
+        }
+    })
+end, { desc = "LSP Range Code Action" })
+
 EOF
 
 lua << EOF
@@ -862,18 +875,6 @@ vim.opt.updatetime = 50
 EOF
 
 lua << EOF
-require('refactoring').setup()
-
-vim.keymap.set({ "n", "v" }, "<leader>re", ":Refactor extract<CR>", { desc = "Extract Function" })
-vim.keymap.set({ "n", "v" }, "<leader>rf", ":Refactor extract_to_file<CR>", { desc = "Extract Function To File" })
-vim.keymap.set({ "n", "v" }, "<leader>rv", ":Refactor extract_var<CR>", { desc = "Extract Variable" })
-vim.keymap.set({ "n", "v" }, "<leader>rI", ":Refactor inline_func<CR>", { desc = "Inline Function" })
-vim.keymap.set({ "n", "v" }, "<leader>ri", ":Refactor inline_var<CR>", { desc = "Inline Variable" })
-vim.keymap.set("n", "<leader>rb", ":Refactor extract_block<CR>", { desc = "Extract Block" })
-vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file<CR>", { desc = "Extract Block To File" })
-EOF
-
-lua << EOF
 local wk = require("which-key")
 
 wk.setup({
@@ -1029,11 +1030,6 @@ _G.setup_lsp_which_key = setup_lsp_which_key
 EOF
 
 lua << EOF
-require("telescope").load_extension("undo")
-vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
-EOF
-
-lua << EOF
 local devicons = require("nvim-web-devicons")
 local ns = vim.api.nvim_create_namespace("netrw_devicons")
 
@@ -1080,6 +1076,8 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 EOF
+
+lua require'colorizer'.setup()
 
 lua require'nvim-treesitter.configs'.setup{highlight={enable=true}} 
 
