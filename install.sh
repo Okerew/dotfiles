@@ -37,8 +37,12 @@ cp -r "$BORDERS_PATH"/* $HOME/.config/borders/
 mv /tmp/dotfiles/borders $HOME/.config/borders
 mv /tmp/dotfiles/sketchybar $HOME/.config/sketchybar
 
-mkdir -p ~/.nvim/config
-mv /tmp/dotfiles/nvim/* ~/.nvim/config/
+mkdir -p ~/.config/nvim
+mv /tmp/dotfiles/nvim/* ~/.config/nvim/
+
+python3 -m venv ~/.local/venv/nvim
+source ~/.local/venv/nvim/bin/activate
+pip install pynvim
 
 echo "Installing tmux"
 brew install tmux
