@@ -11,9 +11,8 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'shaunsingh/nord.nvim'
-Plug 'stevearc/conform.nvim'
 Plug 'lervag/vimtex'
-Plug 'simnalamburt/vimmundo'
+Plug 'simnalamburt/vim-mundo'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
@@ -373,28 +372,30 @@ cmp.setup.filetype('TelescopePrompt', {
 EOF
 
 lua <<EOF
-require("conform").setup({
-  formatters_by_ft = {
-    lua = { "stylua" },
-    python = { "isort", "black" },
-    rust = { "rustfmt" },
-    go = { "gofmt", "goimports" },
-    c = { "clang_format" },
-    cpp = { "clang_format" },
-    javascript = { "prettierd", "prettier", stop_after_first = true },
-  },
-  format_on_save = {
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
-})
+-- LSP Formatting setup
+local function format_buffer()
+  vim.lsp.buf.format({
+    timeout_ms = 2000,
+    async = false,
+  })
+end
 
+-- Format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
-  callback = function(args)
-    require("conform").format({ bufnr = args.buf })
+  callback = function()
+    local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+    for _, client in ipairs(clients) do
+      if client.server_capabilities.documentFormattingProvider then
+        format_buffer()
+        break
+      end
+    end
   end,
 })
+
+-- Manual format keymap
+vim.keymap.set("n", "<leader>lf", format_buffer, { desc = "Format Buffer" })
 EOF
 
 let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
