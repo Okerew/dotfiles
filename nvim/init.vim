@@ -1,6 +1,5 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'tpope/vim-surround'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-lua/plenary.nvim'
@@ -77,11 +76,28 @@ vnoremap p "_dP
 nnoremap <silent> [d :lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]d :lua vim.diagnostic.goto_next()<CR>
 
+function! JumpToNearestMatch(direction)
+  let l:pattern = '\v(\s|\(|\{|\[|\"|\'')'
+  let l:line = line('.')
+  let l:col = col('.')
+  if a:direction == 'forward'
+    let l:match = search(l:pattern, 'cW')
+  elseif a:direction == 'backward'
+    let l:match = search(l:pattern, 'cWb')
+  endif
+  if l:match
+    normal! l
+  endif
+endfunction
+
+nnoremap <C-l> :call JumpToNearestMatch('forward')<CR>
+nnoremap <BS> :call JumpToNearestMatch('backward')<CR>
+
 lua << EOF
 -- Telescope and utilities
 vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find Files" })
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>", { desc = "Diagnostics" })
-vim.keymap.set("n", "<leader>l", ":Telescope live_grep<CR>", { desc = "Live Grep" })
+vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>o", ":InspectTree<CR>", { desc = "Treesitter Symbols" })
 vim.keymap.set("n", "<leader>u", ":MundoToggle<CR>", { desc = "Treesitter Symbols" })
 vim.keymap.set("n", "<leader>a", ":lua require('harpoon'):list():add()<CR>", { desc = "Add to Harpoon" })
@@ -842,37 +858,37 @@ vim.keymap.set("n", "<leader>otb", function() od:busted_test() end, { desc = "Ru
 EOF
 
 lua << EOF
--- More settings
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
 vim.api.nvim_create_autocmd({"CursorMoved", "CursorMovedI"}, {
-  callback = function()
-    local col = vim.fn.col(".") -- current cursor column
-    if col >= 80 then
-      vim.opt.colorcolumn = "80"
-    else
-      vim.opt.colorcolumn = ""
-    end
-  end,
+    callback = function()
+        local col = vim.fn.col(".")
+        if col >= 80 then
+            vim.opt.colorcolumn = "80"
+        else
+            vim.opt.colorcolumn = ""
+        end
+    end,
 })
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-
 vim.opt.smartindent = true
-
 vim.opt.swapfile = false
 vim.opt.backup = false
-
 vim.opt.incsearch = true
-
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
-
 vim.opt.updatetime = 50
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+        vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
+    end,
+})
 EOF
 
 lua << EOF
@@ -1009,7 +1025,6 @@ wk.setup({
 
 wk.add({
   -- Groups
-  { "<leader>r", group = "Refactoring" },
   { "<leader>d", group = "Dependencies" },
   { "<leader>dv", group = "Vulnerabilities" },
   { "<leader>o", group = "Debugger & Tools" },
@@ -1019,12 +1034,6 @@ wk.add({
   { "<leader>oc", group = "CMake/Clear Items" },
   { "<leader>oa", group = "Add" },
   { "<leader>ot", group = "Tests" },
-  { "ys", group = "Surround (add)" },
-  { "yss", desc = "Surround entire line" },
-  { "ysiw", group = "Surround word" },
-  { "yS", desc = "Surround with linewise motion" },
-  { "cs", group = "Change Surround" },
-  { "ds", group = "Delete Surround" },
 })
 
 _G.setup_lsp_which_key = setup_lsp_which_key
