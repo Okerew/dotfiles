@@ -111,6 +111,8 @@ vim.keymap.set("n", "<leader>.", ":bprevious<CR>:bd! #<CR>", { desc = "Close Buf
 vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y", { desc = "Yank to System Clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>x", "\"+d", { desc = "Cut to System Clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>p", "\"_\"+p", { desc = "Paste from System (No Overwrite)" })
+vim.keymap.set({ "n", "v" }, "<leader>lp", ":set spell spelllang=pl<CR>", { desc = "Set spellchecking to polish" })
+vim.keymap.set({ "n", "v" }, "<leader>le", ":set spell spelllang=en_us<CR>", { desc = "Set spellchecking to english" })
 vim.keymap.set({ "n", "v" }, "<leader>v", "\"+p", { desc = "Paste from System" })
 vim.keymap.set("n", "<leader>c", "d", { desc = "Delete (Yank)" })
 vim.keymap.set("v", "<leader>c", "d", { desc = "Delete Selection (Yank)" })
