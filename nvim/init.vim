@@ -99,7 +99,7 @@ vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find Fil
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>", { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>o", ":InspectTree<CR>", { desc = "Treesitter Symbols" })
-vim.keymap.set("n", "<leader>u", ":MundoToggle<CR>", { desc = "Treesitter Symbols" })
+vim.keymap.set("n", "<leader>u", ":MundoToggle<CR>", { desc = "UndoTree" })
 vim.keymap.set("n", "<leader>a", ":lua require('harpoon'):list():add()<CR>", { desc = "Add to Harpoon" })
 
 -- Buffer operations
