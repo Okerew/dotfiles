@@ -36,11 +36,11 @@ Formatter, Linting support
 
 Tex support
 
-Fzf support
+Treesitter support
 
-Remote ssh connection, live share feature like in vscode 
+Telescope support
 
-Collab
+Debugging and testing helper, suspicious variable analyzer
 
 See outdaded depedencies 
 
