@@ -1,9 +1,9 @@
 # Dotfiles
 ## Dark theme:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/482ff322-c53f-4a57-a27f-8d289e3b7cdb" />
+<img width="1920" height="1080" alt="image" src="" />
 
 ## Light theme:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/aade8387-b4bd-498b-b2af-b94e0e67227a" />
+<img width="1920" height="1080" alt="image" src="" />
 
 
 --------------------------------------------------------
