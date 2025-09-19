@@ -1,9 +1,9 @@
 # Dotfiles
 ## Dark theme:
-<img width="1920" height="1080" alt="image" src="" />
+<img width="1920" height="1080" alt="image" src="dark.png" />
 
 ## Light theme:
-<img width="1920" height="1080" alt="image" src="" />
+<img width="1920" height="1080" alt="image" src="light.png" />
 
 
 --------------------------------------------------------
