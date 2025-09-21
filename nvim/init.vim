@@ -17,7 +17,6 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'brianhuster/live-preview.nvim'
-Plug 'Okerew/depramanager-nvim'
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 Plug 'rafamadriz/friendly-snippets'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'} 
@@ -25,7 +24,6 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'folke/which-key.nvim'
 Plug 'Okerew/od.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
-Plug 'norcalli/nvim-colorizer.lua'
 
 call plug#end()
 
@@ -474,34 +472,6 @@ vim.notify = function(msg, level, opts)
   -- Use nvim-notify for non-blocked messages
   notify(msg, level, opts)
 end
-EOF
-
-" Depramanager setup
-
-lua << EOF
-local depramanager = require('depramanager')
-
--- Enable auto-highlighting
-depramanager.setup()
-
--- Optional
--- depramanager.check_all()
--- depramanager.clear_all_highlights()
--- depramanager.refresh_cache()
--- depramanager.status()
-
--- === KEYBINDS ===
--- Bind telescope functions to keys
-vim.keymap.set('n', '<leader>dp', depramanager.python_telescope, { desc = 'Outdated Python packages' })
-vim.keymap.set('n', '<leader>dg', depramanager.go_telescope, { desc = 'Outdated Go modules' })
-vim.keymap.set('n', '<leader>dn', depramanager.npm_telescope, { desc = 'Outdated npm packages' })
-vim.keymap.set('n', '<leader>dph', depramanager.php_telescope, { desc = 'Outdated php packages' })
-vim.keymap.set('n', '<leader>dr', depramanager.rust_telescope, { desc = 'Outdated rust packages' })
-vim.keymap.set('n', '<leader>dvp', depramanager.python_vulnerabilities_telescope, { desc = 'Outdated Python packages' })
-vim.keymap.set('n', '<leader>dvg', depramanager.go_vulnerabilities_telescope, { desc = 'Outdated Go modules' })
-vim.keymap.set('n', '<leader>dvn', depramanager.npm_vulnerabilities_telescope, { desc = 'Outdated npm packages' })
-vim.keymap.set('n', '<leader>dvph', depramanager.php_vulnerabilities_telescope, { desc = 'Outdated php packages' })
-vim.keymap.set('n', '<leader>dvr', depramanager.rust_vulnerabilities_telescope, { desc = 'Outdated rust packages' })
 EOF
 
 lua << EOF
@@ -1027,8 +997,6 @@ wk.setup({
 
 wk.add({
   -- Groups
-  { "<leader>d", group = "Dependencies" },
-  { "<leader>dv", group = "Vulnerabilities" },
   { "<leader>o", group = "Debugger & Tools" },
   { "<leader>od", group = "Debug" },
   { "<leader>or", group = "Remove/Clippy" },
@@ -1088,8 +1056,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 EOF
-
-lua require'colorizer'.setup()
 
 lua require'nvim-treesitter.configs'.setup{highlight={enable=true}} 
 
