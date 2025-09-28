@@ -7,11 +7,12 @@ curl -L https://sh.distant.dev | sh
 
 brew tap homebrew-zathura/zathura
 brew install zathura
-brew install cargo-outdated
-brew install cargo-audit
 
 brew install switchaudio-osx
 brew install nowplaying-cli
+
+brew tap FelixKratz/formulae
+brew install borders
 
 brew install --cask sf-symbols
 brew install --cask font-sf-mono
@@ -19,6 +20,13 @@ brew install --cask font-sf-pro
 
 echo "Cloning Config"
 git clone https://github.com/Okerew/dotfiles /tmp/dotfiles
+
+BORDERS_PATH="$(brew --prefix borders)/share/borders"
+mkdir -p $HOME/.config/borders
+cp -r "$BORDERS_PATH"/* $HOME/.config/borders/
+
+mv /tmp/dotfiles/borders $HOME/.config/borders
+brew services start borders
 
 mkdir -p ~/.config/nvim
 mv /tmp/dotfiles/nvim/* ~/.config/nvim/
