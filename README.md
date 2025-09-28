@@ -26,13 +26,9 @@ nvim 0.11
 
 **Nvim :**
 
-Outline shows the structure of the file
-
-Lsp completion
+Lsp support
 
 Many usefull macros and keybinds
-
-Formatter, Linting support
 
 Tex support
 
@@ -40,19 +36,11 @@ Treesitter support
 
 Telescope support
 
-Debugging and testing helper, suspicious variable analyzer
-
-See outdaded depedencies 
+Debugging and testing helper, suspicious variable analyzer 
 
 Live Preview
 
 And many more!
-
-**Sketchy Bar:**
-Nicely modern configured bar for my liking
-
-**Borders:**
-A nice shade of gray for the border small borders 6px
 
 **Spicetify:**
 A nice theme for spicetify
