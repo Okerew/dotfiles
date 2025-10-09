@@ -11,7 +11,7 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'shaunsingh/nord.nvim'
 Plug 'lervag/vimtex'
-Plug 'simnalamburt/vim-mundo'
+Plug 'mbbill/undotree'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
@@ -97,7 +97,7 @@ vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find Fil
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>", { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>o", ":InspectTree<CR>", { desc = "Treesitter Symbols" })
-vim.keymap.set("n", "<leader>u", ":MundoToggle<CR>", { desc = "UndoTree" })
+vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { desc = "UndoTree" })
 vim.keymap.set("n", "<leader>a", ":lua require('harpoon'):list():add()<CR>", { desc = "Add to Harpoon" })
 
 -- Buffer operations
@@ -413,8 +413,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 -- Manual format keymap
 vim.keymap.set("n", "<leader>lf", format_buffer, { desc = "Format Buffer" })
 EOF
-
-let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
 
 lua << EOF
 -- nvim-notify setup
