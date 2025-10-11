@@ -15,6 +15,7 @@ brew tap FelixKratz/formulae
 brew install sketchybar
 brew install borders
 brew install koekeishiya/formulae/yabai
+brew install skhd
 
 brew install --cask sf-symbols
 brew install --cask font-sf-mono
@@ -47,6 +48,8 @@ mv /tmp/dotfiles/tmux/* $HOME/.config/tmux/
 
 mv /tmp/dotfiles/yabai $HOME/.config/yabai
 
+mv /tmp/dotfiles/.skhdrc $HOME/
+
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 rm -rf /tmp/dotfiles
@@ -54,3 +57,4 @@ rm -rf /tmp/dotfiles
 brew services start sketchybar
 brew services start borders
 yabai --start-service
+skhd --start-service
