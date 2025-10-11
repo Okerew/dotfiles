@@ -54,6 +54,11 @@ Borders for windows, nord colors.
 **Yabai**
 An automatic tiling window manager with FelixKratz settings.
 
+**Tmux**
+For better tab and pane managment, ressurect in iterm2 also has nord colors
+
+The repo also contains a Default.json with nord colors for iterm.
+
 ----
 
 ## Installation
