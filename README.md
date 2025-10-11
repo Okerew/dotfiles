@@ -51,7 +51,7 @@ A good replacement for the native menu bar using nord colors changes colors depe
 **Janky Borders**
 Borders for windows, nord colors.
 
-**Yabai**
+**Yabai along with skhd integration for keybinds see .shkhdrc file for reference**
 An automatic tiling window manager with FelixKratz settings.
 
 **Tmux**
