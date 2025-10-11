@@ -14,6 +14,7 @@ brew install nowplaying-cli
 brew tap FelixKratz/formulae
 brew install sketchybar
 brew install borders
+brew install koekeishiya/formulae/yabai
 
 brew install --cask sf-symbols
 brew install --cask font-sf-mono
@@ -44,9 +45,12 @@ brew install tmux
 mkdir -p $HOME/.config/tmux
 mv /tmp/dotfiles/tmux/* $HOME/.config/tmux/
 
+mv /tmp/dotfiles/yabai $HOME/.config/yabai
+
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 rm -rf /tmp/dotfiles
 
 brew services start sketchybar
 brew services start borders
+yabai --start-service
