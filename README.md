@@ -45,6 +45,12 @@ And many more!
 **Spicetify:**
 A nice theme for spicetify
 
+**Sketchybar**
+A good replacement for the native menu bar using nord colors changes colors depending on if dark mode or light mode is activated.
+
+**Janky Borders**
+Borders for windows
+
 ----
 
 ## Installation
