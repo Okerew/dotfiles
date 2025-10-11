@@ -49,7 +49,10 @@ A nice theme for spicetify
 A good replacement for the native menu bar using nord colors changes colors depending on if dark mode or light mode is activated.
 
 **Janky Borders**
-Borders for windows
+Borders for windows, nord colors.
+
+**Yabai**
+An automatic tiling window manager with my settings.
 
 ----
 
