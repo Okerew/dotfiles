@@ -52,7 +52,7 @@ A good replacement for the native menu bar using nord colors changes colors depe
 Borders for windows, nord colors.
 
 **Yabai**
-An automatic tiling window manager with my settings.
+An automatic tiling window manager with FelixKratz settings.
 
 ----
 
