@@ -1,7 +1,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', { 'branch': 'master' }
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -11,7 +11,6 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'shaunsingh/nord.nvim'
 Plug 'lervag/vimtex'
-Plug 'mbbill/undotree'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
@@ -19,7 +18,7 @@ Plug 'rcarriga/nvim-notify'
 Plug 'brianhuster/live-preview.nvim'
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 Plug 'rafamadriz/friendly-snippets'
-Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'} 
+Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'}
 Plug 'saadparwaiz1/cmp_luasnip' 
 Plug 'folke/which-key.nvim'
 Plug 'Okerew/od.nvim'
@@ -91,13 +90,16 @@ endfunction
 nnoremap <C-l> :call JumpToNearestMatch('forward')<CR>
 nnoremap <BS> :call JumpToNearestMatch('backward')<CR>
 
+packadd nvim.undotree
+packadd nvim.difftool
+
 lua << EOF
 -- Telescope and utilities
 vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find Files" })
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>", { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>o", ":InspectTree<CR>", { desc = "Treesitter Symbols" })
-vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { desc = "UndoTree" })
+vim.keymap.set("n", "<leader>u", ":Undotree<CR>", { desc = "UndoTree" })
 vim.keymap.set("n", "<leader>a", ":lua require('harpoon'):list():add()<CR>", { desc = "Add to Harpoon" })
 
 -- Buffer operations
@@ -1055,11 +1057,17 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 EOF
 
-lua require'nvim-treesitter.configs'.setup{highlight={enable=true}} 
+lua << EOF
+local ts = require('nvim-treesitter')
+ts.setup()
+ts.install({ 'lua', 'python', 'c', 'cpp', 'rust', 'go',
+    'javascript', 'typescript', 'html', 'css', 'bash',
+    'json', 'vim', 'vimdoc' })
+EOF
 
 function FoldConfig()
-	set foldmethod=expr
-	set foldexpr=nvim_treesitter#foldexpr()
+    set foldmethod=expr
+    set foldexpr=v:lua.vim.treesitter.foldexpr()
     set foldlevel=99
     set foldlevelstart=99
 endfunction
