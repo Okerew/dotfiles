@@ -70,9 +70,6 @@ nnoremap =ap ma=ap'a
 
 vnoremap p "_dP
 
-nnoremap <silent> [d :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <silent> ]d :lua vim.diagnostic.goto_next()<CR>
-
 function! JumpToNearestMatch(direction)
   let l:pattern = '\v(\s|\(|\{|\[|\"|\'')'
   let l:line = line('.')
@@ -222,7 +219,7 @@ local function ensure_installed()
         
         -- Go tools
         "goimports",
-	"golangci-lint",
+	    "golangci-lint",
         
         -- Rust tools
         "rustfmt",
