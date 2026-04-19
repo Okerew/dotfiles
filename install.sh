@@ -50,6 +50,8 @@ mv /tmp/dotfiles/yabai $HOME/.config/yabai
 
 mv /tmp/dotfiles/.skhdrc $HOME/
 
+mv /tmp/dotfiles/.zshrc $HOME/
+
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 rm -rf /tmp/dotfiles
