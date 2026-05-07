@@ -1,119 +1,119 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
+# enable powerlevel10k instant prompt. should stay close to the top of ~/.zshrc.
+# initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${xdg_cache_home:-$home/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${xdg_cache_home:-$home/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# if you come from bash you might have to change your $path.
+# export path=$home/bin:/usr/local/bin:$path
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# path to your oh-my-zsh installation.
+export zsh="$home/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
+# set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k"
+# to know which specific one was loaded, run: echo $random_theme
+# see https://github.com/ohmyzsh/ohmyzsh/wiki/themes
+zsh_theme="powerlevel10k"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# set list of themes to pick from when loading at random
+# setting this variable when zsh_theme=random will cause zsh to load
+# a theme from this variable instead of looking in $zsh/themes/
+# if set to an empty array, this variable will have no effect.
+# zsh_theme_random_candidates=( "robbyrussell" "agnoster" )
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# uncomment the following line to use case-sensitive completion.
+# case_sensitive="true"
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# uncomment the following line to use hyphen-insensitive completion.
+# case-sensitive completion must be off. _ and - will be interchangeable.
+# hyphen_insensitive="true"
 
-# Uncomment one of the following lines to change the auto-update behavior
+# uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
-# Uncomment the following line to change how often to auto-update (in days).
+# uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
+# uncomment the following line if pasting urls and other text is messed up.
+# disable_magic_functions="true"
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+# uncomment the following line to disable colors in ls.
+# disable_ls_colors="true"
 
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+# uncomment the following line to disable auto-setting terminal title.
+# disable_auto_title="true"
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+# uncomment the following line to enable command auto-correction.
+# enable_correction="true"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
+# uncomment the following line to display red dots whilst waiting for completion.
+# you can also set it to another string to have that shown instead of the default red dots.
+# e.g. completion_waiting_dots="%f{yellow}waiting...%f"
+# caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# completion_waiting_dots="true"
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
+# uncomment the following line if you want to disable marking untracked files
+# under vcs as dirty. this makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+# disable_untracked_files_dirty="true"
 
-# Uncomment the following line if you want to change the command execution time
+# uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# You can set one of the optional three formats:
+# you can set one of the optional three formats:
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+# hist_stamps="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# would you like to use another custom folder than $zsh/custom?
+# zsh_custom=/path/to/new-custom-folder
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# which plugins would you like to load?
+# standard plugins can be found in $zsh/plugins/
+# custom plugins may be added to $zsh_custom/plugins/
+# example format: plugins=(rails git textmate ruby lighthouse)
+# add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
+source $zsh/oh-my-zsh.sh
 
-# User configuration
+# user configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# export manpath="/usr/local/man:$manpath"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# you may need to manually set your language environment
+# export lang=en_us.utf-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
+# preferred editor for local and remote sessions
+# if [[ -n $ssh_connection ]]; then
+#   export editor='vim'
 # else
-#   export EDITOR='mvim'
+#   export editor='mvim'
 # fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# compilation flags
+# export archflags="-arch x86_64"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the zsh_custom folder.
+# for a full list of active aliases, run `alias`.
 #
-# Example aliases
+# example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ls='lsd'
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# to customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+# !! contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
@@ -121,30 +121,33 @@ else
     if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
         . "/opt/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/opt/anaconda3/bin:$PATH"
+        export path="/opt/anaconda3/bin:$path"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+test -e "${home}/.iterm2_shell_integration.zsh" && source "${home}/.iterm2_shell_integration.zsh"
 
 alias rosetta='arch -x86_64 zsh'
 alias python='python3'
 alias avenv='source .venv/bin/activate'
 alias cvenv='python -m venv .venv'
-alias dfcmake='cmake -S .. -B . -G "Ninja"'
-# Created by `pipx` on 2025-07-24 19:23:30
-export PATH="$HOME/.local/bin:$PATH"
-export EDITOR=nvim
+alias dfcmake='cmake -s .. -b . -g "ninja"'
+alias htop='mactop'
+# created by `pipx` on 2025-07-24 19:23:30
+export path="$home/.local/bin:$path"
+export editor=nvim
 
 if command -v tmux &> /dev/null; then
-  if [ -z "$TMUX" ] && [ -n "$PS1" ]; then
+  if [ -z "$tmux" ] && [ -n "$ps1" ]; then
     tmux attach -t default || tmux new -s default
   fi
 fi
 
-spicetify update
+nohup spicetify update >/dev/null 2>&1 & disown
 
-export PATH=$PATH:/$HOME/.spicetify
+nohup python3 "$home/betterdiscordautoinstaller/manual-installer-mac.py" >/dev/null 2>&1 & disown
+
+export path=$path:/$home/.spicetify
