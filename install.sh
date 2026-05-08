@@ -22,7 +22,6 @@ ask "Install mactop (system monitor)?" install_mactop
 ask "Install RustNet?" install_rustnet
 ask "Install tmux?" install_tmux
 ask "Install iTerm2 (terminal emulator)?" install_iterm2
-ask "Install Ollama (local LLM runtime)?" install_ollama
 
 echo ""
 echo "Starting installation..."
@@ -73,10 +72,6 @@ fi
 
 if [[ "$install_anaconda" =~ ^[Yy]$ ]]; then
     brew install --cask anaconda
-fi
-
-if [[ "$install_ollama" =~ ^[Yy]$ ]]; then
-    brew install ollama
 fi
 
 brew install --cask sf-symbols
@@ -170,10 +165,6 @@ fi
 
 if [[ "$install_spicetify" =~ ^[Yy]$ ]]; then
     spicetify apply
-fi
-
-if [[ "$install_ollama" =~ ^[Yy]$ ]]; then
-    brew services start ollama
 fi
 
 echo ""
