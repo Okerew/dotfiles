@@ -136,6 +136,8 @@ alias avenv='source .venv/bin/activate'
 alias cvenv='python -m venv .venv'
 alias dfcmake='cmake -S .. -B . -G "Ninja"'
 alias htop='mactop'
+alias opencode='ollama launch opencode'
+alias wireshark='rustnet'
 # Created by `pipx` on 2025-07-24 19:23:30
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=nvim
