@@ -22,6 +22,7 @@ ask "Install mactop (system monitor)?" install_mactop
 ask "Install RustNet?" install_rustnet
 ask "Install tmux?" install_tmux
 ask "Install iTerm2 (terminal emulator)?" install_iterm2
+ask "Install Ollama (local LLM runtime)?" install_ollama
 
 echo ""
 echo "Starting installation..."
@@ -74,6 +75,10 @@ if [[ "$install_anaconda" =~ ^[Yy]$ ]]; then
     brew install --cask anaconda
 fi
 
+if [[ "$install_ollama" =~ ^[Yy]$ ]]; then
+    brew install ollama
+fi
+
 brew install --cask sf-symbols
 brew install --cask font-sf-mono
 brew install --cask font-sf-pro
@@ -90,24 +95,28 @@ fi
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
     curl -L https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v2.0.28/sketchybar-app-font.ttf \
         -o $HOME/Library/Fonts/sketchybar-app-font.ttf
-    (git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua \
+
+    (
+        git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua \
         && cd /tmp/SbarLua/ \
         && make install \
-        && rm -rf /tmp/SbarLua/)
+        && rm -rf /tmp/SbarLua/
+    )
 fi
 
 git clone https://github.com/Okerew/dotfiles /tmp/dotfiles
 
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
-    mv $HOME/.config/sketchybar $HOME/.config/sketchybar_backup
-    mv /tmp/dotfiles/sketchybar $HOME/.config/sketchybar
+    mv "$HOME/.config/sketchybar" "$HOME/.config/sketchybar_backup" 2>/dev/null
+    mv /tmp/dotfiles/sketchybar "$HOME/.config/sketchybar"
 fi
 
 if [[ "$install_borders" =~ ^[Yy]$ ]]; then
     BORDERS_PATH="$(brew --prefix borders)/share/borders"
-    mkdir -p $HOME/.config/borders
-    cp -r "$BORDERS_PATH"/* $HOME/.config/borders/
-    mv /tmp/dotfiles/borders $HOME/.config/borders
+
+    mkdir -p "$HOME/.config/borders"
+    cp -r "$BORDERS_PATH"/* "$HOME/.config/borders/"
+    mv /tmp/dotfiles/borders "$HOME/.config/borders"
 fi
 
 mkdir -p ~/.nvim/config
@@ -115,20 +124,22 @@ mv /tmp/dotfiles/nvim/* ~/.nvim/config/
 
 if [[ "$install_tmux" =~ ^[Yy]$ ]]; then
     brew install tmux
-    mkdir -p $HOME/.config/tmux
-    mv /tmp/dotfiles/tmux/* $HOME/.config/tmux/
+
+    mkdir -p "$HOME/.config/tmux"
+    mv /tmp/dotfiles/tmux/* "$HOME/.config/tmux/"
+
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
 if [[ "$install_yabai" =~ ^[Yy]$ ]]; then
-    mv /tmp/dotfiles/yabai $HOME/.config/yabai
+    mv /tmp/dotfiles/yabai "$HOME/.config/yabai"
 fi
 
 if [[ "$install_skhd" =~ ^[Yy]$ ]]; then
-    mv /tmp/dotfiles/.skhdrc $HOME/
+    mv /tmp/dotfiles/.skhdrc "$HOME/"
 fi
 
-mv /tmp/dotfiles/.zshrc $HOME/
+mv /tmp/dotfiles/.zshrc "$HOME/"
 
 if [[ "$install_iterm2" =~ ^[Yy]$ ]]; then
     brew install --cask iterm2
@@ -136,7 +147,7 @@ fi
 
 if [[ "$install_betterdiscord" =~ ^[Yy]$ ]]; then
     git clone https://github.com/Zwylair/BetterDiscordAutoInstaller
-    mv BetterDiscordAutoInstaller $HOME/
+    mv BetterDiscordAutoInstaller "$HOME/"
 fi
 
 rm -rf /tmp/dotfiles
@@ -159,6 +170,10 @@ fi
 
 if [[ "$install_spicetify" =~ ^[Yy]$ ]]; then
     spicetify apply
+fi
+
+if [[ "$install_ollama" =~ ^[Yy]$ ]]; then
+    brew services start ollama
 fi
 
 echo ""
