@@ -6,6 +6,7 @@ options=(
     hidpi=of
     active_color=0xffb0c4e0  # light blue with gray hint
     inactive_color=0xffaab0b6  # medium gray bluish tone
+    blacklist="Steam,steam_osx,Steam Helper,steam,com.valvesoftware.steam"
 )
 
 borders "${options[@]}"
