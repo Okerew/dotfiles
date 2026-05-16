@@ -9,18 +9,24 @@ local current_dark_mode = is_dark_mode()
 
 local function start_simple_monitor()
 	os.execute([[
+        pid_file="/tmp/sketchybar_theme_monitor.pid"
+        if [ -f "$pid_file" ]; then
+            old_pid=$(cat "$pid_file")
+            kill "$old_pid" 2>/dev/null
+        fi
         (
             while true; do
-                sleep 2
+                sleep 5
                 current_theme=$(defaults read -g AppleInterfaceStyle 2>/dev/null | grep -c "Dark")
                 marker_file="$HOME/.config/sketchybar/.theme_state"
-                
+
                 if [ ! -f "$marker_file" ] || [ "$current_theme" != "$(cat "$marker_file" 2>/dev/null)" ]; then
                     echo "$current_theme" > "$marker_file"
                     sketchybar --reload
                 fi
             done
         ) &
+        echo $! > "$pid_file"
     ]])
 end
 

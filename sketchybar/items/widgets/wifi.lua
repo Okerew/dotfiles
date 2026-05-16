@@ -3,10 +3,8 @@ local colors = require("colors")
 local settings = require("settings")
 
 local function isInternetConnected(callback)
-	-- Simple ping test - if we can reach the internet, we're connected
-	sbar.exec("ping -c 1 -W 2000 8.8.8.8 2>/dev/null", function(ping_result)
-		local connected = ping_result and string.find(ping_result, "bytes from") ~= nil
-		callback(connected)
+	sbar.exec("route -n get default 2>/dev/null | grep -q 'interface:' && echo 'connected' || echo 'disconnected'", function(result)
+		callback(result ~= nil and result:match("connected") ~= nil)
 	end)
 end
 
@@ -138,8 +136,8 @@ end
 -- Subscribe to network change events and system wake
 wifi:subscribe({ "wifi_change", "system_woke", "network_update" }, update_wifi_status)
 
--- More frequent updates to catch reconnections
-sbar.exec("while true; do echo 'network_update'; sleep 3; done", function()
+-- Poll as fallback for reconnections (system events handle real-time changes)
+sbar.exec("while true; do echo 'network_update'; sleep 10; done", function()
 	update_wifi_status()
 end)
 

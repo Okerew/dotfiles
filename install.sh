@@ -39,7 +39,6 @@ if [[ "$install_zathura" =~ ^[Yy]$ ]]; then
 fi
 
 brew install switchaudio-osx
-brew install nowplaying-cli
 
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]] || \
    [[ "$install_borders" =~ ^[Yy]$ ]]; then

@@ -3,10 +3,10 @@ local settings = require("settings")
 
 -- Execute the event provider binary which provides the event "cpu_update" for
 -- the cpu load data, which is fired every 2.0 seconds.
-sbar.exec("killall cpu_load >/dev/null; $CONFIG_DIR/helpers/event_providers/cpu_load/bin/cpu_load cpu_update 2.0")
+sbar.exec("killall cpu_load 2>/dev/null; $CONFIG_DIR/helpers/event_providers/cpu_load/bin/cpu_load cpu_update 2.0")
 
 -- Execute RAM monitoring
-sbar.exec("killall ram_load >/dev/null; $CONFIG_DIR/helpers/event_providers/ram_load/bin/ram_load ram_update 2.0")
+sbar.exec("killall ram_load 2>/dev/null; $CONFIG_DIR/helpers/event_providers/ram_load/bin/ram_load ram_update 2.0")
 
 local cpu = sbar.add("graph", "widgets.cpu", 42, {
 	position = "right",
@@ -96,11 +96,11 @@ ram:subscribe("ram_update", function(env)
 end)
 
 cpu:subscribe("mouse.clicked", function(env)
-	sbar.exec("open -a 'Activity Monitor'")
+	sbar.exec("/opt/homebrew/bin/tmux send-keys -t 'default:1.1' 'mactop' Enter")
 end)
 
 ram:subscribe("mouse.clicked", function(env)
-	sbar.exec("open -a 'Activity Monitor'")
+	sbar.exec("/opt/homebrew/bin/tmux send-keys -t 'default:1.1' 'mactop' Enter")
 end)
 
 -- Background around the cpu and ram items
