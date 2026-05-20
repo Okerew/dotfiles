@@ -149,6 +149,6 @@ fi
 
 nohup spicetify update >/dev/null 2>&1 & disown
 
-nohup python3 "$HOME/BetterDiscordAutoInstaller/manual-installer-mac.py" >/dev/null 2>&1 & disown
+nohup vencord_cli --repair-auto >/dev/null 2>&1 & disown
 
 export PATH=$PATH:/$HOME/.spicetify

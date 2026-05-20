@@ -14,7 +14,7 @@ ask "Install JankyBorders (window borders)?" install_borders
 ask "Install Yabai (tiling window manager)?" install_yabai
 ask "Install skhd (hotkey daemon)?" install_skhd
 ask "Install Spicetify (Spotify customization)?" install_spicetify
-ask "Install BetterDiscordAutoInstaller?" install_betterdiscord
+ask "Install VencordAutoInstaller?" install_vencord
 ask "Install Zathura (PDF viewer)?" install_zathura
 ask "Install Anaconda?" install_anaconda
 ask "Install BlackHole 2ch (virtual audio driver)?" install_blackhole
@@ -139,9 +139,11 @@ if [[ "$install_iterm2" =~ ^[Yy]$ ]]; then
     brew install --cask iterm2
 fi
 
-if [[ "$install_betterdiscord" =~ ^[Yy]$ ]]; then
-    git clone https://github.com/Zwylair/BetterDiscordAutoInstaller
-    mv BetterDiscordAutoInstaller "$HOME/"
+if [[ "$install_vencord" =~ ^[Yy]$ ]]; then
+    git clone https://github.com/Okerew/VencordInstaller.git
+    mv VencordInstaller "$HOME/"
+    cd "$HOME/VencordInstaller/"
+    bash install.sh
 fi
 
 rm -rf /tmp/dotfiles
