@@ -1057,7 +1057,13 @@ vim.api.nvim_create_autocmd("FileType", {
 EOF
 
 lua << EOF
-require("tree-sitter-manager").setup({})
+require("tree-sitter-manager").setup({
+ ensure_installed = {
+        'lua', 'python', 'c', 'cpp', 'rust', 'go',
+        'javascript', 'typescript', 'html', 'css', 'bash',
+        'json', 'vim', 'vimdoc', 'markdown'
+      },
+})
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "*",
