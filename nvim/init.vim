@@ -1,7 +1,6 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', { 'branch': 'master' }
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -23,6 +22,7 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'folke/which-key.nvim'
 Plug 'Okerew/od.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'romus204/tree-sitter-manager.nvim'
 
 call plug#end()
 
@@ -1057,12 +1057,16 @@ vim.api.nvim_create_autocmd("FileType", {
 EOF
 
 lua << EOF
-local ts = require('nvim-treesitter')
-ts.setup()
-ts.install({ 'lua', 'python', 'c', 'cpp', 'rust', 'go',
-    'javascript', 'typescript', 'html', 'css', 'bash',
-    'json', 'vim', 'vimdoc' })
+require("tree-sitter-manager").setup({})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "*",
+    callback = function()
+        pcall(vim.treesitter.start)
+    end,
+})
 EOF
+
 
 function FoldConfig()
     set foldmethod=expr
