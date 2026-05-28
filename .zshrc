@@ -153,4 +153,8 @@ nohup vencord_cli --repair-auto >/dev/null 2>&1 & disown
 
 nohup brew services restart borders >/dev/null 2>&1 & disown
 
+if ! pgrep -f switch-kitty-theme.sh >/dev/null; then
+    nohup ~/.config/kitty/switch-kitty-theme.sh >/dev/null 2>&1 &
+fi
+
 export PATH=$PATH:/$HOME/.spicetify

@@ -23,6 +23,8 @@ Plug 'folke/which-key.nvim'
 Plug 'Okerew/od.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'romus204/tree-sitter-manager.nvim'
+Plug 'nickjvandyke/opencode.nvim'
+Plug 'Okerew/reminders-sync'
 
 call plug#end()
 
@@ -121,6 +123,7 @@ vim.keymap.set("n", "<leader>k", ":lnext<CR>zz", { desc = "Next Location" })
 -- Visual mode specific mappings
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Selection Down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Selection Up" })
+vim.keymap.set({ "n", "x" }, "<leader>r", function() require("opencode").select() end, { desc = "Select opencode…" })
 EOF
 
 let g:vimtex_view_method = 'zathura'
@@ -1073,6 +1076,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 EOF
 
+lua << EOF
+require("reminders-sync").setup({
+    -- all optional, these are the defaults:
+    dir              = "$HOME/.reminders", -- where you want to have the reminders
+    bin              = "reminders",        -- path to reminders cli 
+    poll_interval_ms = 30000,              -- 30 s background pull
+    auto_poll        = true,
+})
+EOF
 
 function FoldConfig()
     set foldmethod=expr
