@@ -15,7 +15,6 @@ ask "Install Yabai (tiling window manager)?" install_yabai
 ask "Install skhd (hotkey daemon)?" install_skhd
 ask "Install Spicetify (Spotify customization)?" install_spicetify
 ask "Install VencordAutoInstaller?" install_vencord
-ask "Install Zathura (PDF viewer)?" install_zathura
 ask "Install Anaconda?" install_anaconda
 ask "Install BlackHole 2ch (virtual audio driver)?" install_blackhole
 ask "Install mactop (system monitor)?" install_mactop
@@ -32,11 +31,6 @@ curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 curl -L https://sh.distant.dev | sh
-
-if [[ "$install_zathura" =~ ^[Yy]$ ]]; then
-    brew tap homebrew-zathura/zathura
-    brew install zathura
-fi
 
 brew install switchaudio-osx
 

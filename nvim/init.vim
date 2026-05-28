@@ -126,9 +126,6 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Selection Up" })
 vim.keymap.set({ "n", "x" }, "<leader>r", function() require("opencode").select() end, { desc = "Select opencode…" })
 EOF
 
-let g:vimtex_view_method = 'zathura'
-let g:vimtex_view_zathura_use_synctex = 0
-
 " Gitsigns
 lua << EOF
 require('gitsigns').setup {
