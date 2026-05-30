@@ -10,17 +10,16 @@ echo "Installing config"
 echo ""
 
 ask "Install SketchyBar (status bar)?" install_sketchybar
-ask "Install JankyBorders (window borders)?" install_borders
 ask "Install Yabai (tiling window manager)?" install_yabai
 ask "Install skhd (hotkey daemon)?" install_skhd
 ask "Install Spicetify (Spotify customization)?" install_spicetify
 ask "Install VencordAutoInstaller?" install_vencord
 ask "Install Anaconda?" install_anaconda
 ask "Install BlackHole 2ch (virtual audio driver)?" install_blackhole
-ask "Install mactop (system monitor)?" install_mactop
+ask "Install btop (system monitor)?" install_btop
 ask "Install RustNet?" install_rustnet
 ask "Install tmux?" install_tmux
-ask "Install iTerm2 (terminal emulator)?" install_iterm2
+ask "Install kitty (terminal emulator)?" install_kitty
 
 echo ""
 echo "Starting installation..."
@@ -34,17 +33,9 @@ curl -L https://sh.distant.dev | sh
 
 brew install switchaudio-osx
 
-if [[ "$install_sketchybar" =~ ^[Yy]$ ]] || \
-   [[ "$install_borders" =~ ^[Yy]$ ]]; then
-    brew tap FelixKratz/formulae
-fi
-
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
+    brew tap FelixKratz/formulae
     brew install sketchybar
-fi
-
-if [[ "$install_borders" =~ ^[Yy]$ ]]; then
-    brew install borders
 fi
 
 if [[ "$install_yabai" =~ ^[Yy]$ ]]; then
@@ -76,8 +67,10 @@ if [[ "$install_rustnet" =~ ^[Yy]$ ]]; then
     brew install rustnet
 fi
 
-if [[ "$install_mactop" =~ ^[Yy]$ ]]; then
-    brew install mactop
+if [[ "$install_btop" =~ ^[Yy]$ ]]; then
+    mkdir -p "$HOME/.config/btop"
+    mv /tmp/dotfiles/btop/* "$HOME/.config/btp/"
+    brew install btop
 fi
 
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
@@ -97,14 +90,6 @@ git clone https://github.com/Okerew/dotfiles /tmp/dotfiles
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
     mv "$HOME/.config/sketchybar" "$HOME/.config/sketchybar_backup" 2>/dev/null
     mv /tmp/dotfiles/sketchybar "$HOME/.config/sketchybar"
-fi
-
-if [[ "$install_borders" =~ ^[Yy]$ ]]; then
-    BORDERS_PATH="$(brew --prefix borders)/share/borders"
-
-    mkdir -p "$HOME/.config/borders"
-    cp -r "$BORDERS_PATH"/* "$HOME/.config/borders/"
-    mv /tmp/dotfiles/borders "$HOME/.config/borders"
 fi
 
 mkdir -p ~/.nvim/config
@@ -129,8 +114,8 @@ fi
 
 mv /tmp/dotfiles/.zshrc "$HOME/"
 
-if [[ "$install_iterm2" =~ ^[Yy]$ ]]; then
-    brew install --cask iterm2
+if [[ "$install_kitty" =~ ^[Yy]$ ]]; then
+    brew install --cask kitty
 fi
 
 if [[ "$install_vencord" =~ ^[Yy]$ ]]; then
@@ -144,10 +129,6 @@ rm -rf /tmp/dotfiles
 
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
     brew services start sketchybar
-fi
-
-if [[ "$install_borders" =~ ^[Yy]$ ]]; then
-    brew services start borders
 fi
 
 if [[ "$install_yabai" =~ ^[Yy]$ ]]; then
