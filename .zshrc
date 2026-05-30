@@ -128,8 +128,6 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 alias rosetta='arch -x86_64 zsh'
 alias python='python3'
 alias avenv='source .venv/bin/activate'
@@ -150,8 +148,6 @@ fi
 nohup spicetify update >/dev/null 2>&1 & disown
 
 nohup vencord_cli --repair-auto >/dev/null 2>&1 & disown
-
-nohup brew services restart borders >/dev/null 2>&1 & disown
 
 if ! pgrep -f switch-kitty-theme.sh >/dev/null; then
     nohup ~/.config/kitty/switch-kitty-theme.sh >/dev/null 2>&1 &
