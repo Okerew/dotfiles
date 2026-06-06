@@ -35,8 +35,7 @@ curl -L https://sh.distant.dev | sh
 brew install switchaudio-osx
 
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
-    brew tap FelixKratz/formulae
-    brew install sketchybar
+    bash install_sketchybar.sh
 fi
 
 if [[ "$install_borders" =~ ^[Yy]$ ]]; then
