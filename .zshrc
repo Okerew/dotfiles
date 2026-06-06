@@ -133,8 +133,6 @@ alias python='python3'
 alias avenv='source .venv/bin/activate'
 alias cvenv='python -m venv .venv'
 alias dfcmake='cmake -S .. -B . -G "Ninja"'
-alias htop='mactop'
-alias wireshark='rustnet'
 # Created by `pipx` on 2025-07-24 19:23:30
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=nvim
@@ -151,6 +149,10 @@ nohup vencord_cli --repair-auto >/dev/null 2>&1 & disown
 
 if ! pgrep -f switch-kitty-theme.sh >/dev/null; then
     nohup ~/.config/kitty/switch-kitty-theme.sh >/dev/null 2>&1 &
+fi
+
+if ! pgrep -f borders >/dev/null; then
+    nohup borders >/dev/null 2>&1 &
 fi
 
 export PATH=$PATH:/$HOME/.spicetify

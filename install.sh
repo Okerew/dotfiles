@@ -10,6 +10,7 @@ echo "Installing config"
 echo ""
 
 ask "Install SketchyBar (status bar)?" install_sketchybar
+ask "Install JankyBorders (My personal edit)" install_borders
 ask "Install Yabai (tiling window manager)?" install_yabai
 ask "Install skhd (hotkey daemon)?" install_skhd
 ask "Install Spicetify (Spotify customization)?" install_spicetify
@@ -36,6 +37,10 @@ brew install switchaudio-osx
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
     brew tap FelixKratz/formulae
     brew install sketchybar
+fi
+
+if [[ "$install_borders" =~ ^[Yy]$ ]]; then
+    git clone https://github.com/Okerew/JankyBorders.git && cd JankyBorders && make install
 fi
 
 if [[ "$install_yabai" =~ ^[Yy]$ ]]; then
@@ -90,6 +95,11 @@ git clone https://github.com/Okerew/dotfiles /tmp/dotfiles
 if [[ "$install_sketchybar" =~ ^[Yy]$ ]]; then
     mv "$HOME/.config/sketchybar" "$HOME/.config/sketchybar_backup" 2>/dev/null
     mv /tmp/dotfiles/sketchybar "$HOME/.config/sketchybar"
+fi
+
+if [[ "$install_borders" =~ ^[Yy]$ ]]; then
+    mkdir -p "$HOME/.config/borders"
+    mv /tmp/dotfiles/borders/* "$HOME/.config/borders/"
 fi
 
 mkdir -p ~/.nvim/config
