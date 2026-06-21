@@ -20,36 +20,45 @@ local media_cover = sbar.add("item", {
     },
 })
 
-local media_artist = sbar.add("item", {
+-- Single item: icon slot = artist (small, grey, shifted up),
+-- label slot = title (larger, shifted down). One bounding box means
+-- they stay adjacent regardless of text length, unlike two separate items.
+local media_info = sbar.add("item", {
     position = "right",
     drawing = false,
-    padding_left = 8,
-    padding_right = 5,
-    width = 0,
-    icon = { drawing = false },
-    label = {
-        string = "No Media",
-        width = 0,
-        font = { size = 9 },
+    scroll_texts = true,
+    padding_left = 10,
+    padding_right = 10,
+    icon = {
+        string = "",
+        font = {
+            family = "JetBrains Mono NL",
+            style = "Regular",
+            size = 9,
+        },
         color = colors.with_alpha(colors.white, 0.6),
-        max_chars = 5,
+        width = 0,
         y_offset = 6,
+    },
+    label = {
+        string = "",
+        font = { size = 11, family = "JetBrains Mono" },
+        width = 0,
+        max_chars = 20,
+        y_offset = -5,
     },
 })
 
-local media_title = sbar.add("item", {
+-- Zero-width always-active item used solely to receive media_change events.
+-- Items with drawing=false may not receive events in some sketchybar versions,
+-- so this watcher stays drawing=true but takes up no visible space.
+local media_watcher = sbar.add("item", {
     position = "right",
-    drawing = false,
-    padding_left = 10,
-    padding_right = 10,
+    drawing = true,
+    width = 0,
+    label = { drawing = false },
     icon = { drawing = false },
-    label = {
-        string = "Testing AppleScript",
-        font = { size = 11, family = "JetBrains Mono" },
-        width = 0,
-        max_chars = 15,
-        y_offset = -5,
-    },
+    background = { drawing = false },
 })
 
 local media_prev = sbar.add("item", {
@@ -109,7 +118,6 @@ local media_next = sbar.add("item", {
     padding_right = 8,
 })
 
-local interrupt = 0
 local previous_state = {
     title = nil,
     artist = nil,
@@ -117,17 +125,11 @@ local previous_state = {
     is_playing = false,
 }
 
-local function animate_detail(detail)
-    if not detail then
-        interrupt = interrupt - 1
+local function truncate(str, n)
+    if str and #str > n then
+        return str:sub(1, n - 1) .. "…"
     end
-    if interrupt > 0 and not detail then
-        return
-    end
-    sbar.animate("tanh", 30, function()
-        media_artist:set({ label = { width = detail and "dynamic" or 0 } })
-        media_title:set({ label = { width = detail and "dynamic" or 0 } })
-    end)
+    return str or ""
 end
 
 local function parse_track_info(result)
@@ -146,15 +148,11 @@ end
 
 local function apply_media_update(title, artist, state, app_name)
     local is_playing = (state == "playing")
-    local any_app_running = title ~= nil
+    local has_info = title ~= nil and title ~= "" and artist ~= nil and artist ~= ""
 
-    if not any_app_running and not previous_state.app_running then
-        return
-    end
-
-    if not any_app_running and previous_state.app_running then
-        media_title:set({ drawing = false })
-        media_artist:set({ drawing = false })
+    if not title then
+        if not previous_state.app_running then return end
+        media_info:set({ drawing = false, icon = { width = 0 }, label = { width = 0 } })
         media_cover:set({ drawing = false })
         previous_state.title = nil
         previous_state.artist = nil
@@ -165,52 +163,37 @@ local function apply_media_update(title, artist, state, app_name)
 
     local title_changed = title ~= previous_state.title
     local artist_changed = artist ~= previous_state.artist
-    local app_state_changed = any_app_running ~= previous_state.app_running
+    local first_show = not previous_state.app_running
     local play_state_changed = is_playing ~= previous_state.is_playing
 
-    if not (title_changed or artist_changed or app_state_changed or play_state_changed) then
+    if not title_changed and not artist_changed and not first_show and not play_state_changed then
         return
     end
 
-    if title and artist and title ~= "" and artist ~= "" then
-        if title_changed or artist_changed or app_state_changed then
-            media_title:set({
-                drawing = true,
-                label = { string = title, width = "dynamic" },
-            })
-            media_artist:set({
-                drawing = true,
-                label = { string = artist, width = "dynamic" },
-            })
-            if title_changed or artist_changed then
-                animate_detail(true)
-                interrupt = interrupt + 1
-            end
-        end
+    local display_title = has_info and title or "No Track"
+    local display_artist = has_info and artist or (app_name or "Music")
 
-        media_cover:set({ drawing = is_playing })
-
-        if is_playing and play_state_changed and not (title_changed or artist_changed) then
-            animate_detail(true)
-            interrupt = interrupt + 1
-        end
+    if title_changed or artist_changed or first_show then
+        media_info:set({
+            drawing = true,
+            icon = { string = truncate(display_artist, 15), width = 0 },
+            label = { string = display_title, width = 0 },
+        })
+        sbar.animate("tanh", 30, function()
+            media_info:set({ icon = { width = "dynamic" }, label = { width = "dynamic" } })
+        end)
     else
-        if app_state_changed or title_changed or artist_changed then
-            media_title:set({
-                drawing = true,
-                label = { string = "No Track", width = "dynamic" },
-            })
-            media_artist:set({
-                drawing = true,
-                label = { string = app_name or "Music App", width = "dynamic" },
-            })
-        end
-        media_cover:set({ drawing = false })
+        media_info:set({ drawing = true })
+        sbar.animate("tanh", 30, function()
+            media_info:set({ icon = { width = "dynamic" }, label = { width = "dynamic" } })
+        end)
     end
+
+    media_cover:set({ drawing = is_playing })
 
     previous_state.title = title
     previous_state.artist = artist
-    previous_state.app_running = any_app_running
+    previous_state.app_running = true
     previous_state.is_playing = is_playing
 end
 
@@ -271,11 +254,27 @@ local function spotify_cmd(cmd)
     end)
 end
 
-sbar.add("event", "media_app_check")
+-- Poll every 5 seconds using a recursive one-shot pattern.
+-- sbar.exec only fires its callback on process exit, so "while true" never
+-- triggers. Each call spawns a short-lived process that exits after 5s.
+local function schedule_poll()
+    sbar.exec("sleep 5 && echo tick", function()
+        update_media_info()
+        schedule_poll()
+    end)
+end
+
+-- media_watcher is drawing=true so it reliably receives media_change events.
+-- media_cover is drawing=false and may be silently skipped by sketchybar.
+media_watcher:subscribe("media_change", function(env)
+    update_media_info()
+end)
 
 media_cover:subscribe("media_change", function(env)
     update_media_info()
 end)
+
+sbar.add("event", "media_app_check")
 
 media_cover:subscribe("media_app_check", function(env)
     update_media_info()
@@ -286,17 +285,12 @@ media_cover:subscribe("mouse.clicked", function(env)
     update_media_info()
 end)
 
-media_title:subscribe("mouse.clicked", function(env)
+media_info:subscribe("mouse.clicked", function(env)
     media_cover:set({ popup = { drawing = "toggle" } })
     update_media_info()
 end)
 
-media_artist:subscribe("mouse.clicked", function(env)
-    media_cover:set({ popup = { drawing = "toggle" } })
-    update_media_info()
-end)
-
-media_title:subscribe("mouse.exited.global", function(env)
+media_info:subscribe("mouse.exited.global", function(env)
     media_cover:set({ popup = { drawing = false } })
 end)
 
@@ -312,8 +306,5 @@ media_next:subscribe("mouse.clicked", function(env)
     spotify_cmd("next track")
 end)
 
-sbar.exec("while true; do sleep 5; echo 'tick'; done", function()
-    update_media_info()
-end)
-
 update_media_info()
+schedule_poll()

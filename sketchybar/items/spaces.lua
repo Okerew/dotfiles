@@ -112,6 +112,8 @@ space_window_observer:subscribe("space_windows_change", function(env)
         icon_line = " —"
     end
     sbar.animate("tanh", 10, function()
-        spaces[env.INFO.space]:set({ label = icon_line })
+        if spaces[env.INFO.space] then
+            spaces[env.INFO.space]:set({ label = icon_line })
+        end
     end)
 end)

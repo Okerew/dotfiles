@@ -151,6 +151,10 @@ if ! pgrep -f switch-kitty-theme.sh >/dev/null; then
     nohup ~/.config/kitty/switch-kitty-theme.sh >/dev/null 2>&1 &
 fi
 
+if ! pgrep -f switch-spicetify-theme.sh >/dev/null; then
+    nohup ~/.config/spicetify/switch-spicetify-theme.sh >/dev/null 2>&1 &
+fi
+
 if ! pgrep -f borders >/dev/null; then
     nohup borders >/dev/null 2>&1 &
 fi
