@@ -21,6 +21,7 @@ SBARLUA_TMP=$(mktemp -d)
 git clone --depth 1 https://github.com/FelixKratz/SbarLua.git "$SBARLUA_TMP"
 (cd "$SBARLUA_TMP" && make install)
 rm -rf "$SBARLUA_TMP"
+cd $HOME/.config/sketchybar/helpers && make
 echo "==> SbarLua installed"
 
 echo "==> Starting sketchybar..."
