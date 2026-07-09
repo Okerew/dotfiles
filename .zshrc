@@ -143,8 +143,6 @@ if command -v tmux &> /dev/null; then
   fi
 fi
 
-nohup spicetify update >/dev/null 2>&1 & disown
-
 nohup vencord_cli --repair-auto >/dev/null 2>&1 & disown
 
 if ! pgrep -f switch-kitty-theme.sh >/dev/null; then
