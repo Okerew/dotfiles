@@ -34,6 +34,7 @@ colorscheme nord     " Default colorscheme
 set fillchars=eob:\ 
 :setlocal spell
 :setlocal spelllang=en_us
+set splitright
 
 " === KEYMAPS ===
 " Buffer navigation
@@ -123,7 +124,6 @@ vim.keymap.set("n", "<leader>k", ":lnext<CR>zz", { desc = "Next Location" })
 -- Visual mode specific mappings
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Selection Down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Selection Up" })
-vim.keymap.set({ "n", "x" }, "<leader>r", function() require("opencode").select() end, { desc = "Select opencode…" })
 EOF
 
 " Gitsigns
@@ -1070,6 +1070,19 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function()
         pcall(vim.treesitter.start)
     end,
+})
+EOF
+
+lua << EOF
+vim.o.equalalways = false
+vim.keymap.set({ "n", "x" }, "<leader>r", function()
+  require("opencode").ask("@this: ", { submit = true })
+end, { desc = "Ask opencode…" })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    vim.cmd("vertical resize 50")
+  end,
 })
 EOF
 
