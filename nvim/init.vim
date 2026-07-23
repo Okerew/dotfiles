@@ -655,6 +655,24 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   end,
 })
 
+-- Run gobo whenever a GML file is saved, then reload the buffer
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.gml",
+  callback = function(args)
+    local bufnr = args.buf
+    local file = args.file
+
+    vim.fn.jobstart({ "gobo", file }, {
+      on_exit = function()
+        vim.schedule(function()
+          if vim.api.nvim_buf_is_valid(bufnr) then
+            vim.cmd("checktime")
+          end
+        end)
+      end,
+    })
+  end,
+})
 EOF
 
 "" More configs
