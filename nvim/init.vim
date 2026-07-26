@@ -824,9 +824,11 @@ vim.keymap.set("n", "<leader>occ", function() od:cmake_configure() end, { desc =
 vim.keymap.set("n", "<leader>ocb", function() od:cmake_build() end, { desc = "CMake Build" })
 vim.keymap.set("n", "<leader>otc", function() od:ctest() end, { desc = "Run CMake Test" })
 
--- GDB
+-- GDB and LLDB
 vim.keymap.set("n", "<leader>ogdb", function() od:gdb_debug() end, { desc = "GDB Debug" })
 vim.keymap.set("n", "<leader>ogr", function() od:gdb_remote() end, { desc = "GDB Remote" })
+vim.keymap.set("n", "<leader>oldb", function() od:lldb_debug() end, { desc = "LLDB Debug" })
+vim.keymap.set("n", "<leader>olr", function() od:lldb_remote() end, { desc = "LLDB Remote" })
 
 -- Copy breakpoints, watchpoints, tracepoints (You didnt think I would programm a whole dap logic now did you :)
 vim.keymap.set("n", "<leader>oab", function() od:copy_breakpoint() end, { desc = "Add breakpoint" })
