@@ -150,7 +150,7 @@ require('gitsigns').setup {
   current_line_blame_opts = {
     virt_text = true,
     virt_text_pos = 'eol',
-    delay = 1000,
+    delay = 10,
     ignore_whitespace = false,
     virt_text_priority = 100,
     use_focus = true,
