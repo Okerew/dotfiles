@@ -21,6 +21,7 @@ ask "Install btop (system monitor)?" install_btop
 ask "Install RustNet?" install_rustnet
 ask "Install tmux?" install_tmux
 ask "Install kitty (terminal emulator)?" install_kitty
+ask "Install fastfetch?" install_fastfetch
 
 echo ""
 echo "Starting installation..."
@@ -125,6 +126,11 @@ mv /tmp/dotfiles/.zshrc "$HOME/"
 
 if [[ "$install_kitty" =~ ^[Yy]$ ]]; then
     brew install --cask kitty
+fi
+
+if [[ "$install_fastfetch" =~ ^[Yy]$ ]]; then
+    brew install fastfetch
+    mv /tmp/dotfiles/fastfetch "$HOME/.config/fastfetch/"
 fi
 
 if [[ "$install_vencord" =~ ^[Yy]$ ]]; then
