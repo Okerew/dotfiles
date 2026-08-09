@@ -683,6 +683,18 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
         vim.bo.filetype = "cpp"
     end
 })
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+    pattern = "*.fsh",
+    callback = function()
+        vim.bo.filetype = "cpp"
+    end
+})
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+    pattern = "*.vsh",
+    callback = function()
+        vim.bo.filetype = "cpp"
+    end
+})
 EOF
 
 lua << EOF
