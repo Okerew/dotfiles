@@ -29,7 +29,7 @@ local cal = sbar.add("item", {
     border_color = colors.black,
     border_width = 1
   },
-  click_script = "open -a 'Calendar'"
+  click_script = "osascript -e 'tell application \"System Events\" to click (first menu bar item of menu bar 1 of application process \"ControlCenter\" whose description is \"Clock\")'"
 })
 
 -- Double border for calendar using a single item bracket

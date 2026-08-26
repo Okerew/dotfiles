@@ -6,6 +6,8 @@ if ! command -v brew &>/dev/null; then
   exit 1
 fi
 
+brew install blueutil
+
 if ! brew list sketchybar &>/dev/null; then
   echo "==> Installing sketchybar..."
   brew install FelixKratz/formulae/sketchybar
