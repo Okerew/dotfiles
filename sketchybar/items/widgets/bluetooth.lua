@@ -221,10 +221,10 @@ bluetooth:subscribe({ "forced", "routine", "system_woke" },
     update_bluetooth_status)
 
 -- Fallback poll in case blueutil state changes aren't otherwise signalled.
-sbar.exec("while true; do echo 'bluetooth_update'; sleep 10; done",
-    function()
-        update_bluetooth_status()
-    end)
+-- sbar.exec callbacks only fire when the command exits, so an infinite
+-- loop with a callback never runs; trigger the event instead.
+sbar.exec("pkill -f 'sketchybar --trigger bluetooth_update'; "
+    .. "while true; do sketchybar --trigger bluetooth_update; sleep 5; done &")
 
 bluetooth:subscribe("mouse.clicked", toggle_details)
 bluetooth:subscribe("mouse.exited.global", hide_details)
